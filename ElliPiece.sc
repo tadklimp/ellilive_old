@@ -25,11 +25,16 @@ ElliPiece : Object{
 
 		numVoices = argNumVoices;
 
-		argNumVoices.do{
-			voices = voices.add( ElliVoice.new( monome) );
-		};
+		{
+			argNumVoices.do{
+				voices = voices.add( ElliVoice.new( ) );
+			};
+			0.5.wait;
 
-		//ElliMain.new(monome);
+			ElliMain.new();
+
+		}.fork(SystemClock);
+
 
 	}
 

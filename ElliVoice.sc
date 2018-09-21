@@ -1,12 +1,11 @@
 
 
-ElliVoice : ElliPiece {
+ElliVoice : ElliMain {
 
 	classvar <allVoices;
 
-	var <>local, <>ancestor;
+	var <>local;
 	var create, <container, <fx;
-
 
 
 
@@ -15,8 +14,8 @@ ElliVoice : ElliPiece {
 		allVoices = []
 	}
 
-	*new { |argParent|
-		^super.new.initElliVoice(argParent)
+	*new {
+		^super.new.initElliVoice()
 	}
 
 
@@ -25,14 +24,14 @@ ElliVoice : ElliPiece {
 	}
 
 
-	initElliVoice { | myParent |
+	initElliVoice {
 
 		var sequenceChanged, rhythmChanged;
 
-		ancestor = myParent;
+	//	ancestor = myParent;
 
-		container =  GRContainerView( myParent, 0@1, 11, 7);
-		fx = GRContainerView.newDisabled( myParent, 0@1, 11, 4, true);
+		container =  GRContainerView( ElliPiece.monome, 0@1, 11, 7);
+		fx = GRContainerView.newDisabled( ElliPiece.monome, 0@1, 11, 4, true);
 
 		// Initialize Voice State
 		local = (
