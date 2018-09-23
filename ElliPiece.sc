@@ -1,6 +1,6 @@
 
 
-ElliPiece : Object{
+ElliPiece {
 
 	var <>clock, <>bpm, <numVoices;
 
