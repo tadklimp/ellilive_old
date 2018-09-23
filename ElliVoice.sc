@@ -77,9 +77,6 @@ ElliVoice {
 		soundView.showSelectedNeg;
 		rtmView.showSelectedNeg;
 
-		// return the Dictionary
-
-
 	}
 
 	// MVC Responders
@@ -170,6 +167,7 @@ ElliVoice {
 	sequenceChanged  {
 		SimpleController(this).put(\seq_changed, { |obj, tag, val, who|
 			//local.seq.postln;
+			/*
 			var allParams = [ this.rhythms, this.sounds, this.fx];
 			//if(who == \scene_toggle){{SinOsc.ar(Rand(300,800))*EnvGen.kr(Env.perc,doneAction:2)}.play;}
 
@@ -188,6 +186,9 @@ ElliVoice {
 				}
 				{"EMPTY SEQ".warn}
 			};
+			*/
+			"checking if Controller works".postln;
+			[obj,tag,val,who].postln;
 		})
 
 	}
