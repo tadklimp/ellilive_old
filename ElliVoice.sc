@@ -1,6 +1,6 @@
 
 
-ElliVoice : ElliMain {
+ElliVoice {
 
 	classvar <allVoices;
 

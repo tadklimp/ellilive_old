@@ -1,5 +1,5 @@
 
-ElliGlob {
+ElliControls {
 
 
 	var  <scenes, globalCtr, <selected ;
@@ -17,11 +17,11 @@ ElliGlob {
 	}
 
 	*new {
-		^super.new.initElliMain()
+		^super.new.initElliControls()
 	}
 
 
-	initElliMain {
+	initElliControls {
 		// MVC model of Global Toggle/Button States (Voice/Page/Scene/Play)
 		// selected has to be a GLobal variable
 
