@@ -2,27 +2,18 @@
 
 ElliPiece {
 
-	classvar
-	var
-
-
 	*new { |numVoices|
-		^super.new.initPiece(numVoices)
+
+		^super.new.initElliPiece(numVoices);
 	}
 
 
-
-	initPiece { |argNumVoices|
-
+	initElliPiece { |argNumVoices|
 
 		argNumVoices.do{
 			EE.voices.add( ElliVoice.new( ) );
 		};
 
-		ElliMain.new();
-
-
 	}
-
 
 }

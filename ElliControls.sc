@@ -2,22 +2,17 @@
 ElliControls {
 
 
-	var  <scenes, globalCtr, <selected ;
+	var globalCtr, <selected ;
 	var voiceChanged, pageChanged, sceneChanged, playbackChanged, shiftPressed, sequenceChanged;
 	var <globalControlsContainer, voiceSelector, sceneView, pageToggle;
 	var mixerView;
 	var playButton, playBlinkRout, shiftKey;
 
-	var <>voice=0, <>page=0, <>scene=0, <>play=false, <>shift=false, <>tempo=1;
-	classvar <scenes ;
 
-	*initClass {
 
-		scenes = IdentityDictionary.new;
-	}
 
 	*new {
-		^super.new.initElliControls()
+		^super.new.initElliControls;
 	}
 
 
@@ -33,13 +28,13 @@ ElliControls {
 
 
 		// Includes all the global controls:
-		globalControlsContainer = GRContainerView(ElliPiece.monome, 11@0, 5, 8);
+		globalControlsContainer = GRContainerView( EE.monome, 11@0, 5, 8);
 
 
 
 		// VOICE Toggle Selector:
 		// TODO: ask which scene is selected?
-		voiceSelector = GRHToggle(ElliPiece.monome, 0@0, ElliPiece.voices.size, 1);
+		voiceSelector = GRHToggle( EE.monome, 0@0, EE.voices.size, 1);
 		voiceSelector.action = { |view, value|
 			// inform the model
 			this.set_voice(value, \voiceToggle);
@@ -156,32 +151,32 @@ ElliControls {
 	}
 
 	set_voice { | val, who|
-		voice = val;
+		EE.selVoice = val;
 		this.changed(\voice_changed, val, who);
 	}
 
 	set_page { | val, who|
-		page = val;
+		EE.selPage = val;
 		this.changed(\page_changed, val, who);
 	}
 
 	set_scene { | val, who|
-		scene = val;
+		EE.selScene = val;
 		this.changed(\scene_changed, val, who);
 	}
 
 	set_play { | val, who|
-		play = val;
+		EE.play = val;
 		this.changed(\playback, val, who);
 	}
 
 	set_shift { | val, who|
-		shift = val;
+		EE.shift = val;
 		this.changed(\shiftMode, val, who);
 	}
 
-	set_tempo { | val, who|
-		tempo = val;
+	set_bpm { | val, who|
+		EE.bpm = val;
 		this.changed(\tempo, val, who);
 	}
 
