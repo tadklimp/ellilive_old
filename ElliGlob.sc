@@ -1,5 +1,5 @@
 
-ElliMain : ElliPiece{
+ElliGlob {
 
 
 	var  <scenes, globalCtr, <selected ;
