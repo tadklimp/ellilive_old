@@ -15,7 +15,7 @@ ElliVoice {
 	}
 
 	*new {
-		^super.new.initElliVoice()
+		^super.new.initElliVoice
 	}
 
 
@@ -30,8 +30,8 @@ ElliVoice {
 
 	//	ancestor = myParent;
 
-		container =  GRContainerView( ElliPiece.monome, 0@1, 11, 7);
-		fx = GRContainerView.newDisabled( ElliPiece.monome, 0@1, 11, 4, true);
+		container =  GRContainerView( EE.monome, 0@1, 11, 7);
+		fx = GRContainerView.newDisabled( EE.monome, 0@1, 11, 4, true);
 
 		// Initialize Voice State
 		local = (

@@ -2,14 +2,8 @@
 
 ElliPiece {
 
-	var <>clock, <>bpm, <numVoices;
-
-	classvar  <monome, <topView, <voices;
-
-
-	*initClass {
-		voices = []
-	}
+	classvar
+	var
 
 
 	*new { |numVoices|
@@ -20,20 +14,12 @@ ElliPiece {
 
 	initPiece { |argNumVoices|
 
-		topView = GRTopView(16,8);
-		monome = GRHMonome128.new(\main, topView, 0@0);
 
-		numVoices = argNumVoices;
+		argNumVoices.do{
+			EE.voices.add( ElliVoice.new( ) );
+		};
 
-		{
-			argNumVoices.do{
-				voices = voices.add( ElliVoice.new( ) );
-			};
-			0.5.wait;
-
-			ElliMain.new();
-
-		}.fork(SystemClock);
+		ElliMain.new();
 
 
 	}
