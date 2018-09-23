@@ -79,8 +79,8 @@ ElliControls {
 		voiceChanged = SimpleController(EE).put(\voice_changed, { |obj, tag, val, who|
 
 			// access each Voice's Container and FX
-			var container = EE.voices[val][\voiceContainer];
-			var fxC = EE.voices[val][\fxContainer];
+			var container = EE.voices[val].container;
+			var fxC = EE.voices[val].fxBox;
 
 			// voice asks which page is selected:
 			switch( EE.selPage,
@@ -99,8 +99,8 @@ ElliControls {
 		pageChanged = SimpleController(EE).put(\page_changed, { |obj, tag, val, who|
 
 			var voice = EE.selVoice;
-			var container = EE.voices[voice][\voiceContainer];
-			var fxC = EE.voices[voice][\fxContainer];
+			var container = EE.voices[voice].container;
+			var fxC = EE.voices[voice].fxBox;
 			// page asks which voice is displayed:
 			switch( val,
 				nil, { container.bringToFront},
@@ -116,12 +116,12 @@ ElliControls {
 		sceneChanged = SimpleController(EE).put(\scene_changed, { |obj, tag, val, who|
 
 			var voice = EE.selVoice;
-			var seq = EE.voices[voice][\seqView].value.indicesOfEqual(false); // find which sequence is currently selected
-			var allSeqs = EE.voices.size.collect{ |i| EE.voices[i][\seqView].value.indicesOfEqual(false)}; // access the SeqView page of each Voice
+			var seq = EE.voices[voice].sequenceView.value.indicesOfEqual(false); // find which sequence is currently selected
+			var allSeqs = EE.voices.size.collect{ |i| EE.voices[i].sequenceView.value.indicesOfEqual(false)}; // access the SeqView page of each Voice
 			var press = {if( EE.scenes.at(val) != nil) // pressed Scene-button logic function -> recall ALL asssigned sequences
 				{EE.voices.size.do{ |i|
 					var newValue = EE.scenes[val][i][0]; // the last [0] is a trick to drop the array and access the integer inside
-					EE.voices[i][\seqView].setStepValueAction(newValue, false);
+					EE.voices[i].sequenceView.setStepValueAction(newValue, false);
 					EE.voices[i].set_seq(newValue, \scene_toggle); // inform the model that SEQ has changed
 				}}
 				{"scene is empty".warn}};
@@ -130,7 +130,7 @@ ElliControls {
 			// else trigger the scene
 			if ( EE.shift == true)
 			{ EE.scenes.put( val, allSeqs); ( "STORED SCENE " ++ val).postln; EE.scenes.postln}
-			{ press.value; ( "SCENE " ++ val).postln};
+			{ press.value; ( "SCENE " ++ val).postln;};
 
 			// initialise scene selection
 			//if ( who == \init) {this.set_scene = val};
