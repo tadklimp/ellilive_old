@@ -8,19 +8,8 @@ ElliVoice {
 	var create, <container, <fx;
 
 
-
-	*initClass {
-
-		allVoices = []
-	}
-
 	*new {
 		^super.new.initElliVoice
-	}
-
-
-	*all {
-		^allVoices
 	}
 
 

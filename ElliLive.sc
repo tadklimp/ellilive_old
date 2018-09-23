@@ -15,6 +15,7 @@ ElliLive {
 
 		ElliPiece.new(3);
 
+		ElliControls.new;
 
 	}
 }

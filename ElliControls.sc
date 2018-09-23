@@ -18,9 +18,6 @@ ElliControls {
 
 	initElliControls {
 		// MVC model of Global Toggle/Button States (Voice/Page/Scene/Play)
-		// selected has to be a GLobal variable
-
-		//ancestor = myParent;
 
 		////////////////////////////////////////////////////////////////
 		//////////////// - Global Controls: Monome - ///////////////////
@@ -79,14 +76,14 @@ ElliControls {
 		};
 
 		// MVC "View" of Toggle Selections
-		voiceChanged = SimpleController(this).put(\voice_changed, { |obj, tag, val, who|
+		voiceChanged = SimpleController(EE).put(\voice_changed, { |obj, tag, val, who|
 
 			// access each Voice's Container and FX
-			var container = voices[val][\voiceContainer];
-			var fxC = voices[val][\fxContainer];
+			var container = EE.voices[val][\voiceContainer];
+			var fxC = EE.voices[val][\fxContainer];
 
 			// voice asks which page is selected:
-			switch( page,
+			switch( EE.selPage,
 				nil, { container.bringToFront},
 				0, { container.bringToFront},
 				1, { if (fxC.isDisabled)
@@ -99,10 +96,11 @@ ElliControls {
 			//[obj, tag, key, val, who].postln;
 		});
 
-		pageChanged = SimpleController(this).put(\page_changed, { |obj, tag, val, who|
+		pageChanged = SimpleController(EE).put(\page_changed, { |obj, tag, val, who|
 
-			var container = voices[voice][\voiceContainer];
-			var fxC = voices[voice][\fxContainer];
+			var voice = EE.selVoice;
+			var container = EE.voices[voice][\voiceContainer];
+			var fxC = EE.voices[voice][\fxContainer];
 			// page asks which voice is displayed:
 			switch( val,
 				nil, { container.bringToFront},
@@ -115,22 +113,23 @@ ElliControls {
 			//[obj, tag, key, val, who].postln;
 		});
 
-		sceneChanged = SimpleController(this).put(\scene_changed, { |obj, tag, val, who|
+		sceneChanged = SimpleController(EE).put(\scene_changed, { |obj, tag, val, who|
 
-			var seq = voices[voice][\seqView].value.indicesOfEqual(false); // find which sequence is currently selected
-			var allSeqs = voices.size.collect{ |i| voices[i][\seqView].value.indicesOfEqual(false)}; // access the SeqView page of each Voice
-			var press = {if( scenes.at(val) != nil) // pressed Scene-button logic function -> recall ALL asssigned sequences
-				{voices.size.do{ |i|
-					var newValue = scenes[val][i][0]; // the last [0] is a trick to drop the array and access the integer inside
-					voices[i][\seqView].setStepValueAction(newValue, false);
-					voices[i].set_seq(newValue, \scene_toggle); // inform the model that SEQ has changed
+			var voice = EE.selVoice;
+			var seq = EE.voices[voice][\seqView].value.indicesOfEqual(false); // find which sequence is currently selected
+			var allSeqs = EE.voices.size.collect{ |i| EE.voices[i][\seqView].value.indicesOfEqual(false)}; // access the SeqView page of each Voice
+			var press = {if( EE.scenes.at(val) != nil) // pressed Scene-button logic function -> recall ALL asssigned sequences
+				{EE.voices.size.do{ |i|
+					var newValue = EE.scenes[val][i][0]; // the last [0] is a trick to drop the array and access the integer inside
+					EE.voices[i][\seqView].setStepValueAction(newValue, false);
+					EE.voices[i].set_seq(newValue, \scene_toggle); // inform the model that SEQ has changed
 				}}
 				{"scene is empty".warn}};
 
 			// If SHIFT+Scene is pressed store the sequences in the "scenes" Dictionary
 			// else trigger the scene
-			if ( shift == true)
-			{ scenes.put( val, allSeqs); ( "STORED SCENE " ++ val).postln; scenes.postln}
+			if ( EE.shift == true)
+			{ EE.scenes.put( val, allSeqs); ( "STORED SCENE " ++ val).postln; EE.scenes.postln}
 			{ press.value; ( "SCENE " ++ val).postln};
 
 			// initialise scene selection
@@ -138,46 +137,45 @@ ElliControls {
 		});
 
 
-		playbackChanged = SimpleController(this).put(\playback, { |obj, tag, val, who|
+		playbackChanged = SimpleController(EE).put(\playback, { |obj, tag, val, who|
 
 		});
 
-		shiftPressed = SimpleController(this).put(\shiftMode, { |obj, tag, val, who|
+		shiftPressed = SimpleController(EE).put(\shiftMode, { |obj, tag, val, who|
 
 		});
 
-		^globalControlsContainer
 
 	}
 
 	set_voice { | val, who|
 		EE.selVoice = val;
-		this.changed(\voice_changed, val, who);
+		EE.changed(\voice_changed, val, who);
 	}
 
 	set_page { | val, who|
 		EE.selPage = val;
-		this.changed(\page_changed, val, who);
+		EE.changed(\page_changed, val, who);
 	}
 
 	set_scene { | val, who|
 		EE.selScene = val;
-		this.changed(\scene_changed, val, who);
+		EE.changed(\scene_changed, val, who);
 	}
 
 	set_play { | val, who|
 		EE.play = val;
-		this.changed(\playback, val, who);
+		EE.changed(\playback, val, who);
 	}
 
 	set_shift { | val, who|
 		EE.shift = val;
-		this.changed(\shiftMode, val, who);
+		EE.changed(\shiftMode, val, who);
 	}
 
 	set_bpm { | val, who|
 		EE.bpm = val;
-		this.changed(\tempo, val, who);
+		EE.changed(\tempo, val, who);
 	}
 
 

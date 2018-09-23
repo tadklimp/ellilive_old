@@ -31,6 +31,7 @@ EE {
 	clear {
 		// here most have to be reset
 		// keep monome, view, clock, prefs
+		// remove all SimpleControllers
 	}
 
 }
