@@ -8,12 +8,11 @@ ElliLive {
 
 
 
-	initElliLive {
+	initElliLive { | numVoices = 3 |
 
 		EE.new;
 
-
-		ElliPiece.new(3);
+		ElliPiece.new(numVoices);
 
 		ElliControls.new;
 

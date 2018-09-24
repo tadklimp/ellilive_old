@@ -30,7 +30,6 @@ ElliControls {
 
 
 		// VOICE Toggle Selector:
-		// TODO: ask which scene is selected?
 		voiceSelector = GRHToggle( EE.monome, 0@0, EE.voices.size, 1);
 		voiceSelector.action = { |view, value|
 			// inform the model
@@ -44,7 +43,7 @@ ElliControls {
 			this.set_scene(value, \sceneToggle)
 		};
 		sceneView.blinkNegative;
-		//this.set_scene(0, \init); // Initialise Scene position
+		this.set_scene(0, \init); // Initialise Scene position
 
 		// PAGE Toggle selector
 		// select between COMPOSE page and FX page
@@ -58,13 +57,13 @@ ElliControls {
 		// PLAY Button
 		playButton = GRButton(globalControlsContainer, 4@0);
 		// Blink Playbutton on the TempoClock's tempo.
-	//	playBlinkRout = Routine{ loop{ playButton.flash; (1/clock.tempo).wait }};
+		//	playBlinkRout = Routine{ loop{ playButton.flash; (1/clock.tempo).wait }};
 		// blink only when pressed
-	//	playButton.action = {|view, value|
-	//		if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
-	//		{ playBlinkRout.reset; playBlinkRout.play};
-	//		this.set_play(value)
-	//	};
+		//	playButton.action = {|view, value|
+		//		if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
+		//		{ playBlinkRout.reset; playBlinkRout.play};
+		//		this.set_play(value)
+		//	};
 
 		// SHIFT key - press and hold a Scne or Pattern to store - momentary
 		shiftKey = GRButton(globalControlsContainer, 4@7, behavior:\momentary);
@@ -92,7 +91,7 @@ ElliControls {
 				2, { container.bringToFront}
 			);
 			// initialise voice selection
-			//	if ( who == \init) {this.set_voice = val};
+			//	if ( who == \init) {this.set_voice(val)};
 			//[obj, tag, key, val, who].postln;
 		});
 
@@ -118,13 +117,19 @@ ElliControls {
 			var voice = EE.selVoice;
 			var seq = EE.voices[voice].sequenceView.value.indicesOfEqual(false); // find which sequence is currently selected
 			var allSeqs = EE.voices.size.collect{ |i| EE.voices[i].sequenceView.value.indicesOfEqual(false)}; // access the SeqView page of each Voice
-			var press = {if( EE.scenes.at(val) != nil) // pressed Scene-button logic function -> recall ALL asssigned sequences
-				{EE.voices.size.do{ |i|
-					var newValue = EE.scenes[val][i][0]; // the last [0] is a trick to drop the array and access the integer inside
-					EE.voices[i].sequenceView.setStepValueAction(newValue, false);
-					EE.voices[i].set_seq(newValue, \scene_toggle); // inform the model that SEQ has changed
+			var press = {
+				if( EE.scenes.at(val).notNil) // pressed Scene-button logic function -> recall ALL asssigned sequences
+				{ EE.voices.size.do{ |i|
+					var newValue = EE.scenes[val][i];
+					 if (newValue.notNil){
+						EE.voices[i].sequenceView.setStepValueAction(newValue[0], false);
+						EE.voices[i].set_seq(newValue[0], \scene_toggle); // inform the model that SEQ has changed
+					}
+					{"some seqs left unchanged".postln;}
+					//newValue.postln;
 				}}
-				{"scene is empty".warn}};
+				{"scene is empty".warn}
+			};
 
 			// If SHIFT+Scene is pressed store the sequences in the "scenes" Dictionary
 			// else trigger the scene
