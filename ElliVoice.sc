@@ -5,7 +5,7 @@ ElliVoice {
 	var <>local;
 	var <>voiceContainer, <>fxContainer, <>rtmView, <>soundView, <>transposeViewRtm, <>transposeViewSound;
 	var <>seqView, <>mnmSlidePhrase,  <>fxView;
-	var <>selected_seq, <>seqs, <>rhythm, <>sound, voiceFx, <>rtmTranspose, <>soundTranspose;
+	var <>selected_seq, <>seqs, <>rhythm, <>sound, <>voiceFx, <>rtmTranspose, <>soundTranspose;
 
 
 	*new {
@@ -14,10 +14,6 @@ ElliVoice {
 
 
 	initElliVoice {
-
-		var sequenceChanged, rhythmChanged;
-
-		//	ancestor = myParent;
 
 		voiceContainer =  GRContainerView( EE.monome, 0@1, 11, 7);
 		fxContainer = GRContainerView.newDisabled( EE.monome, 0@1, 11, 4, true);
@@ -40,15 +36,14 @@ ElliVoice {
 		// MVC Model Dictionaries
 		selected_seq = 0;
 		seqs = IdentityDictionary.new;
-		rhythm = IdentityDictionary.new;
-		sound = IdentityDictionary.new;
-		voiceFx = IdentityDictionary.new;
+		rhythm = nil;
+		sound = nil;
+		voiceFx = nil;
 		rtmTranspose = 1;
 		soundTranspose = 1;
 
 
-
-
+		// Button Actions
 		// seq buttons
 		seqView.stepPressedAction = { |view, value|
 			this.set_seq(value, \user);
@@ -71,7 +66,10 @@ ElliVoice {
 			this.set_soundTranspose(value, \user);
 		};
 
+		// init the MVC responders
 		this.sequenceChanged;
+		this.rhythmChanged;
+		this.soundChanged;
 
 		seqView.blinkNegative;
 		soundView.showSelectedNeg;
@@ -166,8 +164,7 @@ ElliVoice {
 	// seq changed
 	sequenceChanged  {
 		SimpleController(this).put(\seq_changed, { |obj, tag, val, who|
-			//local.seq.postln;
-			/*
+
 			var allParams = [ this.rhythms, this.sounds, this.fx];
 			//if(who == \scene_toggle){{SinOsc.ar(Rand(300,800))*EnvGen.kr(Env.perc,doneAction:2)}.play;}
 
@@ -175,27 +172,31 @@ ElliVoice {
 			if( EE.shift == true)
 			{ seqs.put(val, allParams); seqs[val].postln }
 			{
-				if( seqs.at(val) != nil)
+				if( seqs.at(val).notNil)
 				{	var newRhythm = seqs[val][0];
 					var newSound = seqs[val][1];
 					var newFx = seqs[val][2];
 
-					this.set_rhythm( newRhythm);
-					this.set_sound( newSound);
-					this.set_voiceFx( newFx);
+					this.set_rhythm( newRhythm, \user);
+					this.set_sound( newSound, \user);
+					this.set_voiceFx( newFx, \user);
 				}
 				{"EMPTY SEQ".warn}
 			};
-			*/
-			"checking if Controller works".postln;
-			[obj,tag,val,who].postln;
 		})
 
 	}
 
 	rhythmChanged  {
 		SimpleController(this).put(\rhythm_changed, { |obj, tag, val, who|
-			rhythm.postln;
+			rtmView.setStepValueAction(val, false)
+
+		})
+	}
+
+	soundChanged  {
+		SimpleController(this).put(\sound_changed, { |obj, tag, val, who|
+			soundView.setStepValueAction(val, false)
 
 		})
 	}

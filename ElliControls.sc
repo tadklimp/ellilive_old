@@ -80,15 +80,17 @@ ElliControls {
 			// access each Voice's Container and FX
 			var container = EE.voices[val].container;
 			var fxC = EE.voices[val].fxBox;
+			var seqV = EE.voices[val].sequenceView;
 
 			// voice asks which page is selected:
 			switch( EE.selPage,
-				nil, { container.bringToFront},
-				0, { container.bringToFront},
-				1, { if (fxC.isDisabled)
-					{fxC.enable; fxC.bringToFront}
-					{fxC.bringToFront}},
-				2, { container.bringToFront}
+				nil, { container.bringToFront; seqV.bringToFront },
+				0, { container.bringToFront; seqV.bringToFront; },
+				1, { if ( fxC.isDisabled )
+					{ fxC.enable; fxC.bringToFront; seqV.bringToFront;}
+					{ fxC.bringToFront; seqV.bringToFront; }
+				},
+				2, { container.bringToFront; seqV.bringToFront; }
 			);
 			// initialise voice selection
 			//	if ( who == \init) {this.set_voice(val)};
@@ -100,14 +102,16 @@ ElliControls {
 			var voice = EE.selVoice;
 			var container = EE.voices[voice].container;
 			var fxC = EE.voices[voice].fxBox;
+			var seqV = EE.voices[val].sequenceView;
 			// page asks which voice is displayed:
 			switch( val,
-				nil, { container.bringToFront},
-				0, { container.bringToFront},
+				nil, { container.bringToFront; seqV.bringToFront },
+				0, { container.bringToFront; seqV.bringToFront },
 				1, { if (fxC.isDisabled)
-					{fxC.enable; fxC.bringToFront}
-					{fxC.bringToFront}},
-				2, { container.bringToFront}
+					{fxC.enable; fxC.bringToFront; seqV.bringToFront; }
+					{fxC.bringToFront; seqV.bringToFront }
+				},
+				2, { container.bringToFront; seqV.bringToFront; }
 			)
 			//[obj, tag, key, val, who].postln;
 		});
@@ -125,7 +129,7 @@ ElliControls {
 						EE.voices[i].sequenceView.setStepValueAction(newValue[0], false);
 						EE.voices[i].set_seq(newValue[0], \scene_toggle); // inform the model that SEQ has changed
 					}
-					{"some seqs left unchanged".postln;}
+					{"some seqs left unchanged".warn;}
 					//newValue.postln;
 				}}
 				{"scene is empty".warn}
