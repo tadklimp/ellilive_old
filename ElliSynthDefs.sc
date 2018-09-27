@@ -6,7 +6,7 @@ ElliSynthDefs {
 
 	*new { |server|
 
-		^super.new.initElliSynth(server)
+		^super.new.initElliSynthDefs(server)
 	}
 
 	initElliSynthDefs { |server|
@@ -17,7 +17,7 @@ ElliSynthDefs {
 			env = EnvGen.kr(Env.sine(decay, 1), gate, amp, doneAction:2);
 			exit = OffsetOut.ar(out, (source*env)!2);
 		}).add;
-
+/*
 		SynthDef(\elliMidi,{ |out=0|
 
 		}).add;
@@ -26,7 +26,7 @@ ElliSynthDefs {
 
 
 		}).add;
-
+*/
 		SynthDef(\elliRing, {|freq=200, trig=1, gate=1, out=0, decay=0.5|
 			var sig, exit, env;
 

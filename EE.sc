@@ -6,6 +6,7 @@ EE {
 	classvar <>topView, <>monome, <>voices, <>scenes;
 	classvar <>clock ;
 	classvar <>bufferDict;
+	classvar <>group;
 	classvar <>root; // this is for the Pdefns
 	classvar <>prefs;
 	classvar <>selVoice=0, <>selPage=0, <>selScene=0, <>play=false, <>shift=false ;
@@ -23,14 +24,20 @@ EE {
 		voices = List.new; // Store all Voices here
 		scenes = IdentityDictionary.new; // Store all Scenes here
 		bufferDict = ();
+		group = Group.new;
 
-		// HACK for autoatic midi chan assignement
+		// HACK for automatic midi chan assignement
 		midiChanCount = 0;
 
 		clock = TempoClock(2).permanent_(false);
 		// ADD sounds folder path
 		// ADD prefs file path
 		// ADD MIDI support and INIT
+		"MIDI is ON".postln;
+		MIDIClient.init;
+		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410");
+		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+
 
 	}
 

@@ -2,15 +2,17 @@
 
 ElliVoice {
 
-	var <>local;
+	var <>local, <id, <name;
 	var <>voiceContainer, <>fxContainer, <>rtmView, <>pitchView, <>transposeViewRtm, <>transposeViewPitch;
 	var <>seqView, <>mnmSlidePhrase, <>fxView;
 	var <>sel_seq, <>sel_rhythm, <>sel_pitch, <>sel_fx, <>rtmTranspose, <>pitchTranspose;
 	var <>seqCollection, <>rhythmCollection, <>pitchCollection, <>fxCollection, <>rtmTranspDict , <>pitchTranspDict ;
 
-	var <>type, <>midiOut, <>midiChan, <>pat, <>pbVal;
+	var <>type, <>midiOut, <>midiChan;
 	var <>voiceGroup, <>soundGroup, <>fxGroup;
 	var <>mainOut, <>fxIn, <>fxOut;
+
+	var <>pbind;
 
 
 	*new {
@@ -19,6 +21,15 @@ ElliVoice {
 
 
 	initElliVoice {
+
+
+		id = EE.voices.size;
+		name = ("voice"++ this.id).asSymbol;
+		voiceGroup = Group.new(EE.group);
+		soundGroup = Group.new(voiceGroup, \addToHead);
+		fxGroup = Group.new(voiceGroup, \addToTail);
+		//midiOut=nil;
+		//midiChan = 0;
 
 		// MVC Models
 		sel_seq = 0;
@@ -90,6 +101,8 @@ ElliVoice {
 		this.pitchChanged;
 		this.typeChanged;
 		this.fxChanged;
+
+
 
 
 	}
@@ -296,10 +309,20 @@ ElliVoice {
 	typeChanged {
 		SimpleController(this).put(\voiceType_changed, { |obj, tag, val, who|
 
+			Pbindef(name).clear; // if it exists, clear it;
 			case
 			{val == \osc} {"am an osci".postln;  }
 			{val == \sample} {"am a sam".postln;  }
-			{val == \midi} {"am ol midi".postln; }
+			{val == \midi} {"am ol midi".postln;
+				Pbindef(name,
+					\server, Server.default,
+					\group, voiceGroup,
+					\type, \midi,
+					\midicmd, \noteOn,
+					\chan, midiChan,
+					\midiout, midiOut
+				)
+			}
 
 		})
 	}

@@ -18,8 +18,15 @@ ElliPiece {
 				var voice;
 
 				EE.voices.add( ElliVoice.new);
-
 				voice = EE.voices[i];
+
+				// HACK: for now, automatically assign midiChans to new midiVoices
+				if( voiceType[i] == \midi){
+					voice.midiOut = EE.midiOut;
+					voice.midiChan = EE.midiChanCount;
+					EE.midiChanCount = EE.midiChanCount + 1;
+				};
+
 				voice.setVoiceType(voiceType[i]);
 			};
 			// make General Group
