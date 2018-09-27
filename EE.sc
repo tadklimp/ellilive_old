@@ -10,7 +10,7 @@ EE {
 	classvar <>root; // this is for the Pdefns
 	classvar <>prefs;
 	classvar <>selVoice=0, <>selPage=0, <>selScene=0, <>play=false, <>shift=false ;
-	classvar <>prefs, <>midi, <>midiOut, <>midiChanCount ;
+	classvar <>prefs, <>midi, <>midiOut, <>midiChanCount, <>midiClock ;
 
 
 	*new {
@@ -37,6 +37,9 @@ EE {
 		MIDIClient.init;
 		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410");
 		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
+
+
 
 
 	}
@@ -49,6 +52,7 @@ EE {
 		voices = List.new; // Store all Voices here
 		scenes = IdentityDictionary.new; // Store all Scenes here
 		bufferDict = ();
+		midiClock.stop;
 	}
 
 	*bpm { |newBpm|

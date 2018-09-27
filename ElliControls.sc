@@ -54,13 +54,13 @@ ElliControls {
 		// PLAY Button
 		playButton = GRButton(globalControlsContainer, 4@0);
 		// Blink Playbutton on the TempoClock's tempo.
-			playBlinkRout = Routine{ loop{ playButton.flash; (1/EE.clock.tempo).wait }};
+		playBlinkRout = Routine{ loop{ playButton.flash; (1/EE.clock.tempo).wait }};
 		// blink only when pressed
-			playButton.action = {|view, value|
-				if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
-				{ playBlinkRout.reset; playBlinkRout.play};
-				this.set_play(value)
-			};
+		playButton.action = {|view, value|
+			if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
+			{ playBlinkRout.reset; playBlinkRout.play};
+			this.set_play(value)
+		};
 
 		// SHIFT key - press and hold a Scne or Pattern to store - momentary
 		shiftKey = GRButton(globalControlsContainer, 4@7, behavior:\momentary);
@@ -122,7 +122,7 @@ ElliControls {
 				if( EE.scenes.at(val).notNil) // pressed Scene-button logic function -> recall ALL asssigned sequences
 				{ EE.voices.size.do{ |i|
 					var newValue = EE.scenes[val][i];
-					 if (newValue.notNil){
+					if (newValue.notNil){
 						EE.voices[i].sequenceView.setStepValueAction(newValue[0], false);
 						EE.voices[i].set_seq(newValue[0], \scene_toggle); // inform the model that SEQ has changed
 					}
@@ -146,10 +146,13 @@ ElliControls {
 		playbackChanged = SimpleController(EE).put(\playback, { |obj, tag, val, who|
 
 			if(EE.clock.isRunning){
-			if(val==true){
-				Pbindef.all.keys.do{ |x| Pdef(x).play(EE.clock, quant:1);}
-			}{
-				Pbindef.all.keys.do{ |x| Pdef(x).stop;}
+				if(val==true){
+					//EE.midiClock.play;
+					EE.midiClock.start;
+					Pbindef.all.keys.do{ |x| Pdef(x).play(EE.clock, quant:1);}
+				}{
+					Pbindef.all.keys.do{ |x| Pdef(x).stop};
+					EE.midiClock.stop;
 			}}{
 				"CLOCK IS NOT RUNNING!".warn
 			};
