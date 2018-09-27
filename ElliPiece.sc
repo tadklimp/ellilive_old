@@ -10,10 +10,14 @@ ElliPiece {
 
 	initElliPiece { |argNumVoices|
 
-		argNumVoices.do{
-			EE.voices.add( ElliVoice.new( ) );
+		argNumVoices.do{ |i|
+			EE.voices.add( ElliVoice.new);
 		};
 
+	}
+
+	*load {
+		// etwas
 	}
 
 }

@@ -14,15 +14,19 @@ ElliPresets {
 		// here you load the file if it exists
 	}
 
-	loadElliPresets {
+	load {
 		// load
+		// for ElliVoice
+		// setVoiceType seqDict_
 	}
 
-	storeElliPresets {
+	store {
 		// write
+		// for ElliVoice:
+		// voiceType seqDict rhythmDict pitchDict fxDict
 	}
 
-	removeElliPreset {
+	remove {
 		// remove sthng from the Dict
 	}
 

@@ -17,7 +17,6 @@ ElliControls {
 
 
 	initElliControls {
-		// MVC model of Global Toggle/Button States (Voice/Page/Scene/Play)
 
 		////////////////////////////////////////////////////////////////
 		//////////////// - Global Controls: Monome - ///////////////////
@@ -28,17 +27,15 @@ ElliControls {
 		globalControlsContainer = GRContainerView( EE.monome, 11@0, 5, 8);
 
 
-
-		// VOICE Toggle Selector:
-		voiceSelector = GRHToggle( EE.monome, 0@0, EE.voices.size, 1);
+		voiceSelector = GRHToggle( EE.monome, 0@0, EE.voices.size, 1); // VOICE Toggle Selector:
 		voiceSelector.action = { |view, value|
 			// inform the model
 			this.set_voice(value, \voiceToggle);
 		};
 		this.set_voice(0, \init); // initialize Toggle position
 
-		// the SCENE's container + action
-		sceneView = GRStepView(globalControlsContainer, 1@0, 3,6).fill;
+
+		sceneView = GRStepView(globalControlsContainer, 1@0, 3,6).fill; // the SCENE's container + action
 		sceneView.stepPressedAction = { |view, value|
 			this.set_scene(value, \sceneToggle)
 		};
@@ -57,13 +54,13 @@ ElliControls {
 		// PLAY Button
 		playButton = GRButton(globalControlsContainer, 4@0);
 		// Blink Playbutton on the TempoClock's tempo.
-		//	playBlinkRout = Routine{ loop{ playButton.flash; (1/clock.tempo).wait }};
+			playBlinkRout = Routine{ loop{ playButton.flash; (1/EE.clock.tempo).wait }};
 		// blink only when pressed
-		//	playButton.action = {|view, value|
-		//		if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
-		//		{ playBlinkRout.reset; playBlinkRout.play};
-		//		this.set_play(value)
-		//	};
+			playButton.action = {|view, value|
+				if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
+				{ playBlinkRout.reset; playBlinkRout.play};
+				this.set_play(value)
+			};
 
 		// SHIFT key - press and hold a Scne or Pattern to store - momentary
 		shiftKey = GRButton(globalControlsContainer, 4@7, behavior:\momentary);
