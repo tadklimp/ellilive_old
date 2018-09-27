@@ -83,9 +83,9 @@ ElliVoice {
 		this.pitchChanged;
 		this.typeChanged;
 
-		if( this.voiceType == nil){
-			this.setVoiceType(\osc);
-		}
+	//	if( this.voiceType == nil){
+	//		this.setVoiceType(\osc);
+	//	}
 
 	}
 
@@ -273,15 +273,13 @@ ElliVoice {
 	}
 
 	typeChanged {
-
 		SimpleController(this).put(\voiceType_changed, { |obj, tag, val, who|
 
-			^case
+			case
 			{val == \osc} {"am an osci".postln;  }
 			{val == \sample} {"am a sam".postln;  }
 			{val == \midi} {"am ol midi".postln; }
 
 		})
-
 	}
 }
