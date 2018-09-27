@@ -1,0 +1,697 @@
+var o, p;
+o = [
+	IdentityDictionary.prNew,  Array.prNew(32),  List.prNew,  Array.prNew(6),  
+	Array.prNew(2),  Array.prNew(11),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  MIDIOut.prNew,  Array.prNew(2),  
+	Array.prNew(11),  IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  
+	Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  
+	Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  
+	Array.prNew(32),  Array.prNew(2),  Array.prNew(11),  IdentityDictionary.prNew,  
+	Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  
+	Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  
+	Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  Array.prNew(2),  
+	Array.prNew(9),  IdentityDictionary.prNew,  Array.prNew(32),  Array.prNew(3),  
+	Array.prNew(3),  Array.prNew(3),  IdentityDictionary.prNew,  Array.prNew(64),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	Prand.prNew,  Array.prNew(4),  Prand.prNew,  Array.prNew(4),  
+	IdentityDictionary.prNew,  Array.prNew(64),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  Pseq.prNew,  Array.prNew(8),  
+	Pseq.prNew,  Array.prNew(8),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  
+	Array.prNew(2),  Array.prNew(9),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  IdentityDictionary.prNew,  Array.prNew(32),  
+	IdentityDictionary.prNew,  Array.prNew(32),  Array.prNew(2),  IdentityDictionary.prNew,  
+	Array.prNew(32),  Array.prNew(5),  Array.prNew(1),  Array.prNew(5),  
+	Array.prNew(1),  Array.prNew(5),  Array.prNew(1)
+];
+p = [
+	// IdentityDictionary
+	0, [ array: o[1],  size: 1,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	1, [ nil,  nil,  'test',  o[2],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// List
+	2, [ array: o[3] ],  
+	// Array
+	3, [ o[4],  o[19],  o[33],  o[47],  
+		o[128],  o[142] ],  
+	// Array
+	4, [ 0,  o[5] ],  
+	// Array
+	5, [ 0,  'voice0',  'midi',  o[6],  
+		o[8],  o[10],  o[12],  o[14],  
+		o[16],  o[18],  0 ],  
+	// IdentityDictionary
+	6, [ array: o[7],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	7, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	8, [ array: o[9],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	9, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	10, [ array: o[11],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	11, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	12, [ array: o[13],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	13, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	14, [ array: o[15],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	15, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	16, [ array: o[17],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	17, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// MIDIOut
+	18, [ port: 0,  uid: -329508479,  
+		latency: 0.1 ],  
+	// Array
+	19, [ 1,  o[20] ],  
+	// Array
+	20, [ 1,  'voice1',  'midi',  o[21],  
+		o[23],  o[25],  o[27],  o[29],  
+		o[31],  o[18],  1 ],  
+	// IdentityDictionary
+	21, [ array: o[22],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	22, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	23, [ array: o[24],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	24, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	25, [ array: o[26],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	26, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	27, [ array: o[28],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	28, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	29, [ array: o[30],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	30, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	31, [ array: o[32],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	32, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Array
+	33, [ 2,  o[34] ],  
+	// Array
+	34, [ 2,  'voice2',  'midi',  o[35],  
+		o[37],  o[39],  o[41],  o[43],  
+		o[45],  o[18],  2 ],  
+	// IdentityDictionary
+	35, [ array: o[36],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	36, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	37, [ array: o[38],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	38, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	39, [ array: o[40],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	40, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	41, [ array: o[42],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	42, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	43, [ array: o[44],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	44, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	45, [ array: o[46],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	46, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Array
+	47, [ 3,  o[48] ],  
+	// Array
+	48, [ 3,  'voice3',  'osc',  o[49],  
+		o[54],  o[88],  o[122],  o[124],  
+		o[126] ],  
+	// IdentityDictionary
+	49, [ array: o[50],  size: 3,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	50, [ 1,  o[51],  2,  o[52],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  0,  o[53],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Array
+	51, [ 1,  15,  0 ],  
+	// Array
+	52, [ 12,  7,  0 ],  
+	// Array
+	53, [ 0,  4,  0 ],  
+	// IdentityDictionary
+	54, [ array: o[55],  size: 16,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	55, [ 1,  o[56],  10,  o[58],  
+		11,  o[60],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  13,  o[62],  
+		5,  o[64],  0,  o[66],  
+		nil,  nil,  nil,  nil,  
+		7,  o[68],  nil,  nil,  
+		nil,  nil,  9,  o[70],  
+		2,  o[72],  3,  o[74],  
+		8,  o[76],  nil,  nil,  
+		nil,  nil,  15,  o[78],  
+		nil,  nil,  4,  o[80],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  14,  o[82],  
+		nil,  nil,  nil,  nil,  
+		6,  o[84],  12,  o[86] ],  
+	// Prand
+	56, [ list: o[57],  repeats: inf ],  
+	// Array
+	57, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	58, [ list: o[59],  repeats: inf ],  
+	// Array
+	59, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	60, [ list: o[61],  repeats: inf ],  
+	// Array
+	61, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	62, [ list: o[63],  repeats: inf ],  
+	// Array
+	63, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	64, [ list: o[65],  repeats: inf ],  
+	// Array
+	65, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	66, [ list: o[67],  repeats: inf ],  
+	// Array
+	67, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	68, [ list: o[69],  repeats: inf ],  
+	// Array
+	69, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	70, [ list: o[71],  repeats: inf ],  
+	// Array
+	71, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	72, [ list: o[73],  repeats: inf ],  
+	// Array
+	73, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	74, [ list: o[75],  repeats: inf ],  
+	// Array
+	75, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	76, [ list: o[77],  repeats: inf ],  
+	// Array
+	77, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	78, [ list: o[79],  repeats: inf ],  
+	// Array
+	79, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	80, [ list: o[81],  repeats: inf ],  
+	// Array
+	81, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	82, [ list: o[83],  repeats: inf ],  
+	// Array
+	83, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	84, [ list: o[85],  repeats: inf ],  
+	// Array
+	85, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// Prand
+	86, [ list: o[87],  repeats: inf ],  
+	// Array
+	87, [ 0.25,  0.5,  0.75,  1.0 ],  
+	// IdentityDictionary
+	88, [ array: o[89],  size: 16,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	89, [ 1,  o[90],  10,  o[92],  
+		11,  o[94],  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  13,  o[96],  
+		5,  o[98],  0,  o[100],  
+		nil,  nil,  nil,  nil,  
+		7,  o[102],  nil,  nil,  
+		nil,  nil,  9,  o[104],  
+		2,  o[106],  3,  o[108],  
+		8,  o[110],  nil,  nil,  
+		nil,  nil,  15,  o[112],  
+		nil,  nil,  4,  o[114],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  14,  o[116],  
+		nil,  nil,  nil,  nil,  
+		6,  o[118],  12,  o[120] ],  
+	// Pseq
+	90, [ list: o[91],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	91, [ 1,  2,  3,  4,  
+		5,  6,  7,  8 ],  
+	// Pseq
+	92, [ list: o[93],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	93, [ 10,  11,  12,  13,  
+		14,  15,  16,  17 ],  
+	// Pseq
+	94, [ list: o[95],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	95, [ 11,  12,  13,  14,  
+		15,  16,  17,  18 ],  
+	// Pseq
+	96, [ list: o[97],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	97, [ 13,  14,  15,  16,  
+		17,  18,  19,  20 ],  
+	// Pseq
+	98, [ list: o[99],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	99, [ 5,  6,  7,  8,  
+		9,  10,  11,  12 ],  
+	// Pseq
+	100, [ list: o[101],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	101, [ 0,  1,  2,  3,  
+		4,  5,  6,  7 ],  
+	// Pseq
+	102, [ list: o[103],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	103, [ 7,  8,  9,  10,  
+		11,  12,  13,  14 ],  
+	// Pseq
+	104, [ list: o[105],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	105, [ 9,  10,  11,  12,  
+		13,  14,  15,  16 ],  
+	// Pseq
+	106, [ list: o[107],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	107, [ 2,  3,  4,  5,  
+		6,  7,  8,  9 ],  
+	// Pseq
+	108, [ list: o[109],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	109, [ 3,  4,  5,  6,  
+		7,  8,  9,  10 ],  
+	// Pseq
+	110, [ list: o[111],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	111, [ 8,  9,  10,  11,  
+		12,  13,  14,  15 ],  
+	// Pseq
+	112, [ list: o[113],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	113, [ 15,  16,  17,  18,  
+		19,  20,  21,  22 ],  
+	// Pseq
+	114, [ list: o[115],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	115, [ 4,  5,  6,  7,  
+		8,  9,  10,  11 ],  
+	// Pseq
+	116, [ list: o[117],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	117, [ 14,  15,  16,  17,  
+		18,  19,  20,  21 ],  
+	// Pseq
+	118, [ list: o[119],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	119, [ 6,  7,  8,  9,  
+		10,  11,  12,  13 ],  
+	// Pseq
+	120, [ list: o[121],  repeats: inf,  
+		offset: 0 ],  
+	// Array
+	121, [ 12,  13,  14,  15,  
+		16,  17,  18,  19 ],  
+	// IdentityDictionary
+	122, [ array: o[123],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	123, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	124, [ array: o[125],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	125, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	126, [ array: o[127],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	127, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Array
+	128, [ 4,  o[129] ],  
+	// Array
+	129, [ 4,  'voice4',  'sample',  o[130],  
+		o[132],  o[134],  o[136],  o[138],  
+		o[140] ],  
+	// IdentityDictionary
+	130, [ array: o[131],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	131, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	132, [ array: o[133],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	133, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	134, [ array: o[135],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	135, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	136, [ array: o[137],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	137, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	138, [ array: o[139],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	139, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// IdentityDictionary
+	140, [ array: o[141],  size: 0,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	141, [ nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Array
+	142, [ 'scenes',  o[143] ],  
+	// IdentityDictionary
+	143, [ array: o[144],  size: 3,  
+		proto: nil,  parent: nil,  
+		know: false ],  
+	// Array
+	144, [ 1,  o[145],  2,  o[147],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  0,  o[149],  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil,  
+		nil,  nil,  nil,  nil ],  
+	// Array
+	145, [ nil,  nil,  nil,  o[146],  
+		nil ],  
+	// Array
+	146, [ 1 ],  
+	// Array
+	147, [ nil,  nil,  nil,  o[148],  
+		nil ],  
+	// Array
+	148, [ 2 ],  
+	// Array
+	149, [ nil,  nil,  nil,  o[150],  
+		nil ],  
+	// Array
+	150, [ 0 ]
+];
+prUnarchive(o,p);

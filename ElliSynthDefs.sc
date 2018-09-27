@@ -22,7 +22,8 @@ ElliSynthDefs {
 
 		}).add;
 
-		SynthDed(\elliSample,{ |out=0|
+		SynthDed(\elliSample,{ |out=0, bufnum=0, rate|
+			var source,
 
 
 		}).add;

@@ -145,6 +145,15 @@ ElliControls {
 
 		playbackChanged = SimpleController(EE).put(\playback, { |obj, tag, val, who|
 
+			if(EE.clock.isRunning){
+			if(val==true){
+				Pbindef.all.keys.do{ |x| Pdef(x).play(EE.clock, quant:1);}
+			}{
+				Pbindef.all.keys.do{ |x| Pdef(x).stop;}
+			}}{
+				"CLOCK IS NOT RUNNING!".warn
+			};
+
 		});
 
 		shiftPressed = SimpleController(EE).put(\shiftMode, { |obj, tag, val, who|

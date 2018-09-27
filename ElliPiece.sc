@@ -17,8 +17,8 @@ ElliPiece {
 			argNumVoices.do{ |i|
 				var voice;
 
-				EE.voices.add( ElliVoice.new);
-				voice = EE.voices[i];
+				EE.voices.add( ElliVoice.new); // add a new Voice to the global List
+				voice = EE.voices[i]; // access it
 
 				// HACK: for now, automatically assign midiChans to new midiVoices
 				if( voiceType[i] == \midi){

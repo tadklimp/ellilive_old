@@ -10,24 +10,29 @@ ElliLive {
 
 	initElliLive { | numVoices, voiceTypeArray |
 
+		var s = Server.default;
 		var settings, midi, midiOutPorts, midiInPorts;
 
 		// settings = ElliPresets.new;
 		// check if a voiceTypeArray is supplied and valid
 		if (voiceTypeArray.size == numVoices)
 		{
-			EE.new;
+			fork{
+				EE.new;
 
-			ElliPiece.new(numVoices, voiceTypeArray);
+				ElliSynthDefs.new;
+				s.sync;
 
-			ElliControls.new;
+				ElliPiece.new(numVoices, voiceTypeArray);
 
-			EE.preferences;
+				ElliControls.new;
 
-			midi = EE.prefs.midi;
-			midiOutPorts = EE.prefs.midiOutPorts;
-			midiInPorts = EE.prefs.midiInPorts;
+				EE.preferences;
 
+				midi = EE.prefs.midi;
+				midiOutPorts = EE.prefs.midiOutPorts;
+				midiInPorts = EE.prefs.midiInPorts;
+			}
 
 		}{
 			"VoiceType Array size should be equal to the number of Voices!".warn;

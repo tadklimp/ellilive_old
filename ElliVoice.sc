@@ -2,7 +2,7 @@
 
 ElliVoice {
 
-	var <>local, <id, <name;
+	var <>local, <>id, <>name;
 	var <>voiceContainer, <>fxContainer, <>rtmView, <>pitchView, <>transposeViewRtm, <>transposeViewPitch;
 	var <>seqView, <>mnmSlidePhrase, <>fxView;
 	var <>sel_seq, <>sel_rhythm, <>sel_pitch, <>sel_fx, <>rtmTranspose, <>pitchTranspose;
@@ -243,6 +243,16 @@ ElliVoice {
 		fxGroup = Group.after(voiceGroup)
 	}
 
+	getState {
+		var params;
+		params = [id, name, type, seqCollection, rhythmCollection, pitchCollection, fxCollection, rtmTranspDict , pitchTranspDict ];
+		if (type==\midi){
+			var adds = [midiOut, midiChan];
+			params = params ++ adds;
+		};
+		^params;
+	}
+
 	// MVC Responders
 
 	// seq changed
@@ -283,6 +293,7 @@ ElliVoice {
 
 			if( rhythmCollection[val].notNil) {
 				rhythmCollection[val].postln;
+				Pbindef(name, \dur, rhythmCollection[val]);
 			}
 
 		})
@@ -290,8 +301,12 @@ ElliVoice {
 
 	pitchChanged  {
 		SimpleController(this).put(\pitch_changed, { |obj, tag, val, who|
-			pitchView.setStepValueAction(val, false)
+			pitchView.setStepValueAction(val, false);
 
+			if( pitchCollection[val].notNil) {
+				pitchCollection[val].postln;
+				Pbindef(name, \degree, pitchCollection[val]);
+			}
 		})
 	}
 
@@ -311,7 +326,15 @@ ElliVoice {
 
 			Pbindef(name).clear; // if it exists, clear it;
 			case
-			{val == \osc} {"am an osci".postln;  }
+			{val == \osc} {"am an osci".postln;
+				Pbindef(name,
+					\server, Server.default,
+					\group, voiceGroup,
+					\instrument, \elliRing,
+					\amp, 0.5,
+					\degree, 0
+				);
+			}
 			{val == \sample} {"am a sam".postln;  }
 			{val == \midi} {"am ol midi".postln;
 				Pbindef(name,
@@ -320,7 +343,9 @@ ElliVoice {
 					\type, \midi,
 					\midicmd, \noteOn,
 					\chan, midiChan,
-					\midiout, midiOut
+					\midiout, midiOut,
+					\dur, 1,
+					\degree, 0
 				)
 			}
 
