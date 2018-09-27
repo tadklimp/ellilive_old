@@ -7,7 +7,10 @@ ElliVoice {
 	var <>seqView, <>mnmSlidePhrase, <>fxView;
 	var <>sel_seq, <>sel_rhythm, <>sel_pitch, <>sel_fx, <>rtmTranspose, <>pitchTranspose;
 	var <>seqCollection, <>rhythmCollection, <>pitchCollection, <>fxCollection, <>rtmTranspDict , <>pitchTranspDict ;
-	var <>type, <>pat, <>pbVal;
+
+	var <>type, <>midiOut, <>midiChan, <>pat, <>pbVal;
+	var <>voiceGroup, <>soundGroup, <>fxGroup;
+	var <>mainOut, <>fxIn, <>fxOut;
 
 
 	*new {
@@ -71,6 +74,10 @@ ElliVoice {
 			this.set_pitchTranspose(value, \user);
 		};
 
+		fxView.stepPressedAction = { |view, value|
+			this.set_voiceFx(value);
+		};
+
 
 		seqView.blinkNegative;
 		pitchView.showSelectedNeg;
@@ -82,10 +89,8 @@ ElliVoice {
 		this.rhythmChanged;
 		this.pitchChanged;
 		this.typeChanged;
+		this.fxChanged;
 
-	//	if( this.voiceType == nil){
-	//		this.setVoiceType(\osc);
-	//	}
 
 	}
 
@@ -179,7 +184,7 @@ ElliVoice {
 		^pitchTranspose
 	}
 
-	// access Dictionaries
+	// access/change Dictionaries
 
 	seqDict {
 		^seqCollection
@@ -220,6 +225,10 @@ ElliVoice {
 		^type
 	}
 
+	prepareAudioRouting {
+		voiceGroup = Group.new;
+		fxGroup = Group.after(voiceGroup)
+	}
 
 	// MVC Responders
 
@@ -256,6 +265,7 @@ ElliVoice {
 
 	rhythmChanged  {
 		SimpleController(this).put(\rhythm_changed, { |obj, tag, val, who|
+
 			rtmView.setStepValueAction(val, false);
 
 			if( rhythmCollection[val].notNil) {
@@ -269,6 +279,17 @@ ElliVoice {
 		SimpleController(this).put(\pitch_changed, { |obj, tag, val, who|
 			pitchView.setStepValueAction(val, false)
 
+		})
+	}
+
+	fxChanged  {
+		SimpleController(this).put(\voiceFx_changed, { |obj, tag, val, who|
+
+			if (fxCollection[val].notNil){
+				//fxCollection[val].state(\on);
+				fxCollection[val].postln;
+
+			}
 		})
 	}
 

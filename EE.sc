@@ -9,7 +9,7 @@ EE {
 	classvar <>root; // this is for the Pdefns
 	classvar <>prefs;
 	classvar <>selVoice=0, <>selPage=0, <>selScene=0, <>play=false, <>shift=false ;
-	classvar <>prefs, <>midi, <>midiOut ;
+	classvar <>prefs, <>midi, <>midiOut, <>midiChanCount ;
 
 
 	*new {
@@ -24,6 +24,8 @@ EE {
 		scenes = IdentityDictionary.new; // Store all Scenes here
 		bufferDict = ();
 
+		// HACK for autoatic midi chan assignement
+		midiChanCount = 0;
 
 		clock = TempoClock(2).permanent_(false);
 		// ADD sounds folder path

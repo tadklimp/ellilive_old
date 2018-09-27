@@ -23,7 +23,8 @@ ElliPresets {
 	store {
 		// write
 		// for ElliVoice:
-		// voiceType seqDict rhythmDict pitchDict fxDict
+		// voiceType seqDict rhythmDict[transpose] pitchDict[transpose] fxDict
+		// b = EE.voices.size.collect{|i| EE.voices[i].type} // get each Voice's type
 	}
 
 	remove {
@@ -32,3 +33,5 @@ ElliPresets {
 
 
 }
+
+
