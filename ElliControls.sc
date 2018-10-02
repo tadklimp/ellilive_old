@@ -62,7 +62,7 @@ ElliControls {
 			this.set_play(value)
 		};
 
-		// SHIFT key - press and hold a Scne or Pattern to store - momentary
+		// SHIFT key - press and hold a Scene or Pattern to store - momentary
 		shiftKey = GRButton(globalControlsContainer, 4@7, behavior:\momentary);
 		shiftKey.buttonPressedAction = { |view, value|
 			this.set_shift(true);
@@ -148,10 +148,15 @@ ElliControls {
 			if(EE.clock.isRunning){
 				if(val==true){
 					//EE.midiClock.play;
-					EE.midiClock.start;
-					Pbindef.all.keys.do{ |x| Pdef(x).play(EE.clock, quant:1);}
+					EE.clock.schedAbs ( EE.clock.beats.ceil,{
+						EE.midiClock.start;
+						Pbindef.all.keys.do{ |x| Pbindef(x).play(EE.clock, quant:1)};
+
+						}
+					)
 				}{
-					Pbindef.all.keys.do{ |x| Pdef(x).stop};
+					Pbindef.all.keys.do{ |x| Pbindef(x).stop};
+					16.do{ |i| EE.midiOut.allNotesOff(i) };
 					EE.midiClock.stop;
 			}}{
 				"CLOCK IS NOT RUNNING!".warn

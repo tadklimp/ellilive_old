@@ -104,9 +104,42 @@ ElliVoice {
 
 
 
-
 	}
 
+	// text window for inserting new Rhythm Patterns
+	textRhythm { | position |
+		var win, text;
+		{
+			win= Window.new("RTM Input", Rect(150,550,470,50)).background_(Color.red).front;
+			text = TextField(win, Rect(10, 10, 450, 20));
+			text.font_(Font("Andale Mono", 18));
+
+			if( rhythmCollection[position].notNil){ // if something is there, show it
+				text.string_(rhythmCollection[position].asCompileString)
+			};
+
+			text.action = { arg field;
+				field.value.postln;
+				rhythmCollection.put(position, field.value.interpret);
+				win.close;
+			};
+		}.defer;
+	}
+
+	textPitch { | position |
+		var win, text;
+		{
+			win= Window.new("PITCH input", Rect(150,550,470,50)).background_(Color.green).front;
+			text = TextField(win, Rect(10, 10, 450, 20));
+			text.font_(Font("Andale Mono", 18));
+			//a.string = "hi there";
+			text.action = { arg field;
+				field.value.postln;
+				pitchCollection.put(position, field.value.interpret);
+				win.close
+			};
+		}.defer;
+	}
 	// MVC Responders
 	set_seq { | val, who|
 		sel_seq = val;
@@ -142,6 +175,8 @@ ElliVoice {
 		type = val;
 		this.changed(\voiceType_changed, val, who);
 	}
+
+
 
 	// access Instance variables
 
@@ -289,24 +324,35 @@ ElliVoice {
 	rhythmChanged  {
 		SimpleController(this).put(\rhythm_changed, { |obj, tag, val, who|
 
-			rtmView.setStepValueAction(val, false);
+			if ( EE.shift == true)
+			{ this.textRhythm(val)}
+			{
+				rtmView.setStepValueAction(val, false);
 
-			if( rhythmCollection[val].notNil) {
-				rhythmCollection[val].postln;
-				Pbindef(name, \dur, rhythmCollection[val]);
-			}
+				if( rhythmCollection[val].notNil) {
+					rhythmCollection[val].postln;
+					Pbindef(name, \dur, rhythmCollection[val]);
+				}
+			};
+
+
+
 
 		})
 	}
 
 	pitchChanged  {
 		SimpleController(this).put(\pitch_changed, { |obj, tag, val, who|
-			pitchView.setStepValueAction(val, false);
 
-			if( pitchCollection[val].notNil) {
-				pitchCollection[val].postln;
-				Pbindef(name, \degree, pitchCollection[val]);
-			}
+			if ( EE.shift == true)
+			{ this.textPitch(val) }
+			{ pitchView.setStepValueAction(val, false);
+
+				if( pitchCollection[val].notNil) {
+					pitchCollection[val].postln;
+					Pbindef(name, \degree, pitchCollection[val]);
+				}
+			};
 		})
 	}
 

@@ -27,7 +27,7 @@ EE {
 		group = Group.new;
 
 		// HACK for automatic midi chan assignement
-		midiChanCount = 0;
+		midiChanCount = 1;
 
 		clock = TempoClock(2).permanent_(false);
 		// ADD sounds folder path
@@ -35,7 +35,7 @@ EE {
 		// ADD MIDI support and INIT
 		"MIDI is ON".postln;
 		MIDIClient.init;
-		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410");
+		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
 		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
