@@ -10,7 +10,9 @@ ElliVoice {
 
 	var <>type, <>midiOut, <>midiChan;
 	var <>voiceGroup, <>soundGroup, <>fxGroup;
+	var <>muteState, <>soloState;
 	var <>mainOut, <>fxIn, <>fxOut;
+	var <>amp;
 
 	var <>pbind;
 
@@ -28,6 +30,10 @@ ElliVoice {
 		voiceGroup = Group.new(EE.group);
 		soundGroup = Group.new(voiceGroup, \addToHead);
 		fxGroup = Group.new(voiceGroup, \addToTail);
+
+		muteState = false;
+		soloState = false;
+		amp = 0.5;
 		//midiOut=nil;
 		//midiChan = 0;
 
@@ -110,7 +116,7 @@ ElliVoice {
 	textRhythm { | position |
 		var win, text;
 		{
-			win= Window.new("RTM Input", Rect(150,550,470,50)).background_(Color.red).front;
+			win= Window.new("RTM "++ name.asString ++ " ( " ++ type.asString ++ ")", Rect(150,550,470,50)).background_(Color.red).front;
 			text = TextField(win, Rect(10, 10, 450, 20));
 			text.font_(Font("Andale Mono", 18));
 
@@ -129,12 +135,14 @@ ElliVoice {
 	textPitch { | position |
 		var win, text;
 		{
-			win= Window.new("PITCH input", Rect(150,550,470,50)).background_(Color.green).front;
+			win= Window.new("PITCH " ++ name.asString ++ " ( " ++ type.asString ++ ")",
+				Rect(150,550,470,50)).background_(Color.green).front;
 			text = TextField(win, Rect(10, 10, 450, 20));
 			text.font_(Font("Andale Mono", 18));
 			//a.string = "hi there";
 			text.action = { arg field;
 				field.value.postln;
+				pitchCollection.put(position, field.value.interpret);
 				pitchCollection.put(position, field.value.interpret);
 				win.close
 			};
@@ -176,6 +184,27 @@ ElliVoice {
 		this.changed(\voiceType_changed, val, who);
 	}
 
+	mute { |val|
+		if (val==true){
+
+			Pbindef(name, \amp, 0);
+
+			if( EE.mutesBlinkList[this.id].isPlaying ){ //blink the appropriate Voice button when muted
+				nil;
+			}{
+				EE.mutesBlinkList[this.id].reset;
+				EE.mutesBlinkList[this.id].play;
+			};
+
+		}{
+			Pbindef(name, \amp, amp);
+
+			if(EE.mutesBlinkList[this.id].isPlaying){
+				EE.mutesBlinkList[this.id].stop;
+			}
+		}
+
+	}
 
 
 	// access Instance variables
@@ -325,7 +354,7 @@ ElliVoice {
 		SimpleController(this).put(\rhythm_changed, { |obj, tag, val, who|
 
 			if ( EE.shift == true)
-			{ this.textRhythm(val)}
+			{ this.textRhythm(val)}  // with SHIFT pressed enter a new pattern in the TextView
 			{
 				rtmView.setStepValueAction(val, false);
 
@@ -345,7 +374,7 @@ ElliVoice {
 		SimpleController(this).put(\pitch_changed, { |obj, tag, val, who|
 
 			if ( EE.shift == true)
-			{ this.textPitch(val) }
+			{ this.textPitch(val) } // with SHIFT pressed enter a new pattern in the TextView
 			{ pitchView.setStepValueAction(val, false);
 
 				if( pitchCollection[val].notNil) {
@@ -377,7 +406,7 @@ ElliVoice {
 					\server, Server.default,
 					\group, voiceGroup,
 					\instrument, \elliRing,
-					\amp, 0.5,
+					\amp, amp,
 					\degree, 0
 				);
 			}
@@ -391,7 +420,8 @@ ElliVoice {
 					\chan, midiChan,
 					\midiout, midiOut,
 					\dur, 1,
-					\degree, 0
+					\degree, 0,
+					\amp, amp
 				)
 			}
 

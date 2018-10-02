@@ -6,7 +6,7 @@ EE {
 	classvar <>topView, <>monome, <>voices, <>scenes;
 	classvar <>clock ;
 	classvar <>bufferDict;
-	classvar <>group;
+	classvar <>group, <>mutes, <>solos, <>mutesBlinkList;
 	classvar <>root; // this is for the Pdefns
 	classvar <>prefs;
 	classvar <>selVoice=0, <>selPage=0, <>selScene=0, <>play=false, <>shift=false ;
@@ -23,6 +23,9 @@ EE {
 		monome = GRHMonome128.new(\main, topView, 0@0);
 		voices = List.new; // Store all Voices here
 		scenes = IdentityDictionary.new; // Store all Scenes here
+		mutes = IdentityDictionary.new();
+		mutesBlinkList = List.new;
+		solos = IdentityDictionary.new();
 		bufferDict = ();
 		group = Group.new;
 
@@ -38,6 +41,7 @@ EE {
 		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
 		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
+
 
 
 
@@ -69,5 +73,6 @@ EE {
 		.midiInPorts_( 2 ) // how many inports you are using
 		.midiOutPorts_( 3 ); // how many outports
 	}
+
 
 }

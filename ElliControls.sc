@@ -2,10 +2,11 @@
 ElliControls {
 
 
+	classvar  <>voiceSelector;
 	var globalCtr, <selected ;
 	var voiceChanged, pageChanged, sceneChanged, playbackChanged, shiftPressed, sequenceChanged;
-	var <globalControlsContainer, voiceSelector, sceneView, pageToggle;
-	var mixerView;
+	var <globalControlsContainer, sceneView, pageToggle;
+	var mixerView, voiceMute;
 	var playButton, playBlinkRout, shiftKey;
 
 
@@ -23,6 +24,7 @@ ElliControls {
 		////////////////////////////////////////////////////////////////
 
 
+
 		// Includes all the global controls:
 		globalControlsContainer = GRContainerView( EE.monome, 11@0, 5, 8);
 
@@ -31,6 +33,7 @@ ElliControls {
 		voiceSelector.action = { |view, value|
 			// inform the model
 			this.set_voice(value, \voiceToggle);
+			"clicked".postln;
 		};
 		this.set_voice(0, \init); // initialize Toggle position
 
@@ -70,6 +73,12 @@ ElliControls {
 		shiftKey.buttonReleasedAction = { |view, value|
 			this.set_shift(false);
 		};
+
+		// fill up the EE.mutesBlinkList with Blinking Routines waiting to be triggered when a voice is muted
+		EE.voices.size.do{ |voice|
+			EE.mutesBlinkList.add(this.muteBlink(voice));
+		};
+
 
 		// MVC "View" of Toggle Selections
 		voiceChanged = SimpleController(EE).put(\voice_changed, { |obj, tag, val, who|
@@ -118,16 +127,23 @@ ElliControls {
 			var voice = EE.selVoice;
 			var seq = EE.voices[voice].sequenceView.value.indicesOfEqual(false); // find which sequence is currently selected
 			var allSeqs = EE.voices.size.collect{ |i| EE.voices[i].sequenceView.value.indicesOfEqual(false)}; // access the SeqView page of each Voice
+			var allMutes = EE.voices.size.collect{ |i| EE.voices[i].muteState};
+			var allSolos = EE.voices.size.collect{ |i| EE.voices[i].soloState};
+			var allAmps;
+
 			var press = {
 				if( EE.scenes.at(val).notNil) // pressed Scene-button logic function -> recall ALL asssigned sequences
 				{ EE.voices.size.do{ |i|
-					var newValue = EE.scenes[val][i];
-					if (newValue.notNil){
-						EE.voices[i].sequenceView.setStepValueAction(newValue[0], false);
-						EE.voices[i].set_seq(newValue[0], \scene_toggle); // inform the model that SEQ has changed
+					var seqVal = EE.scenes[val][0][i]; // access the SEQ array and then each voice's val
+					if (seqVal.notNil){
+						EE.voices[i].sequenceView.setStepValueAction(seqVal[0], false);
+						EE.voices[i].set_seq(seqVal[0], \scene_toggle); // inform the model that SEQ has changed
 					}
-					{"some seqs left unchanged".warn;}
-					//newValue.postln;
+					{"some seqs left unchanged".warn};
+
+					EE.voices[i].mute(EE.scenes[val][1][i]); // access the Mutes array and ...
+
+
 				}}
 				{"scene is empty".warn}
 			};
@@ -135,7 +151,7 @@ ElliControls {
 			// If SHIFT+Scene is pressed store the sequences in the "scenes" Dictionary
 			// else trigger the scene
 			if ( EE.shift == true)
-			{ EE.scenes.put( val, allSeqs); ( "STORED SCENE " ++ val).postln; EE.scenes.postln}
+			{ EE.scenes.put( val, [allSeqs, allMutes]); ( "STORED SCENE " ++ val).postln; EE.scenes.postln}
 			{ press.value; ( "SCENE " ++ val).postln;};
 
 			// initialise scene selection
@@ -152,7 +168,7 @@ ElliControls {
 						EE.midiClock.start;
 						Pbindef.all.keys.do{ |x| Pbindef(x).play(EE.clock, quant:1)};
 
-						}
+					}
 					)
 				}{
 					Pbindef.all.keys.do{ |x| Pbindef(x).stop};
@@ -169,11 +185,29 @@ ElliControls {
 		});
 
 
+		voiceMute = SimpleController(EE).put(\voice_mute, { |obj, tag, val, who|
+			var voice = EE.voices[val];
+
+			if(voice.muteState == false){ // mute toggle logic
+				voice.mute(true);
+				voice.muteState = true;
+			}{
+				voice.mute(false);
+				voice.muteState = false;
+			}
+		});
+
+
 	}
 
 	set_voice { | val, who|
-		EE.selVoice = val;
-		EE.changed(\voice_changed, val, who);
+
+		if(EE.shift == true){
+			EE.changed(\voice_mute, val, who);
+		}{
+			EE.selVoice = val;
+			EE.changed(\voice_changed, val, who)
+		}
 	}
 
 	set_page { | val, who|
@@ -201,5 +235,10 @@ ElliControls {
 		EE.changed(\tempo, val, who);
 	}
 
-
+	muteBlink { |voice|
+		^Routine{ loop{
+			voiceSelector.indicateBounds( voice@0, 1, 1);
+			0.2.wait}
+		}
+	}
 }

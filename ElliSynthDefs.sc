@@ -28,11 +28,11 @@ ElliSynthDefs {
 
 		}).add;
 */
-		SynthDef(\elliRing, {|freq=200, trig=1, gate=1, out=0, decay=0.5|
+		SynthDef(\elliRing, {|freq=200, trig=1, gate=1, out=0, decay=0.5, amp=0.5|
 			var sig, exit, env;
 
 			sig = Ringz.ar(Impulse.ar(trig).lag(0.002)+ WhiteNoise.ar(0.003),freq.lag(0.02),decay);
-			env = EnvGen.ar(Env.perc(0.001,0.8),gate,doneAction:2);
+			env = EnvGen.ar(Env.perc(0.001,0.8),gate,amp,doneAction:2);
 			exit = Out.ar(out, (sig*env).clip2(0.3)!2)
 
 		}).add;
