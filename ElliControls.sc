@@ -3,11 +3,12 @@ ElliControls {
 
 
 	classvar  <>voiceSelector;
+
 	var globalCtr, <selected ;
 	var voiceChanged, pageChanged, sceneChanged, playbackChanged, shiftPressed, sequenceChanged;
 	var <globalControlsContainer, sceneView, pageToggle;
 	var mixerView, voiceMute;
-	var playButton, playBlinkRout, shiftKey;
+	var playButton, playBlinkRout, shiftKey, altKey;
 
 
 
@@ -49,17 +50,14 @@ ElliControls {
 		// select between COMPOSE page and FX page
 		pageToggle = GRHToggle(globalControlsContainer, 1@7, 3, 1);
 		pageToggle.action = { |view, value|
-			// inform the model
-			this.set_page(value, \pageToggle);
+			this.set_page(value, \pageToggle); // inform the model
 		};
 		this.set_page(0, \init); // initialize Toggle position
 
 		// PLAY Button
 		playButton = GRButton(globalControlsContainer, 4@0);
-		// Blink Playbutton on the TempoClock's tempo.
-		playBlinkRout = Routine{ loop{ playButton.flash; (1/EE.clock.tempo).wait }};
-		// blink only when pressed
-		playButton.action = {|view, value|
+		playBlinkRout = Routine{ loop{ playButton.flash; (1/EE.clock.tempo).wait }}; // Blink Playbutton on the TempoClock's tempo.
+		playButton.action = {|view, value| // blink only when pressed
 			if (playBlinkRout.isPlaying){ playBlinkRout.stop;}
 			{ playBlinkRout.reset; playBlinkRout.play};
 			this.set_play(value)
@@ -73,6 +71,16 @@ ElliControls {
 		shiftKey.buttonReleasedAction = { |view, value|
 			this.set_shift(false);
 		};
+
+		// ALT key - press and hold a Scene or Pattern to store - momentary
+		altKey = GRButton(globalControlsContainer, 4@6, behavior:\momentary);
+		altKey.buttonPressedAction = { |view, value|
+			this.set_alt(true);
+		};
+		altKey.buttonReleasedAction = { |view, value|
+			this.set_alt(false);
+		};
+
 
 		// fill up the EE.mutesBlinkList with Blinking Routines waiting to be triggered when a voice is muted
 		EE.voices.size.do{ |voice|
@@ -131,7 +139,7 @@ ElliControls {
 			var allSolos = EE.voices.size.collect{ |i| EE.voices[i].soloState};
 			var allAmps;
 
-			var press = {
+			var select = {
 				if( EE.scenes.at(val).notNil) // pressed Scene-button logic function -> recall ALL asssigned sequences
 				{ EE.voices.size.do{ |i|
 					var seqVal = EE.scenes[val][0][i]; // access the SEQ array and then each voice's val
@@ -150,9 +158,12 @@ ElliControls {
 
 			// If SHIFT+Scene is pressed store the sequences in the "scenes" Dictionary
 			// else trigger the scene
-			if ( EE.shift == true)
-			{ EE.scenes.put( val, [allSeqs, allMutes]); ( "STORED SCENE " ++ val).postln; EE.scenes.postln}
-			{ press.value; ( "SCENE " ++ val).postln;};
+			if( EE.shift == true){
+				EE.scenes.put( val, [allSeqs, allMutes]); ( "STORED SCENE " ++ val).postln; EE.scenes.postln
+			}{
+				select.value; ( "SCENE " ++ val).postln;
+
+			};
 
 			// initialise scene selection
 			//if ( who == \init) {this.set_scene = val};
@@ -230,6 +241,10 @@ ElliControls {
 		EE.changed(\shiftMode, val, who);
 	}
 
+	set_alt { | val, who|
+		EE.alt = val;
+		EE.changed(\altMode, val, who);
+	}
 	set_bpm { | val, who|
 		EE.bpm = val;
 		EE.changed(\tempo, val, who);

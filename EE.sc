@@ -5,11 +5,11 @@ EE {
 
 	classvar <>topView, <>monome, <>voices, <>scenes;
 	classvar <>clock ;
-	classvar <>bufferDict;
+	classvar <>bufferList;
 	classvar <>group, <>mutes, <>solos, <>mutesBlinkList;
 	classvar <>root; // this is for the Pdefns
 	classvar <>prefs;
-	classvar <>selVoice=0, <>selPage=0, <>selScene=0, <>play=false, <>shift=false ;
+	classvar <>selVoice=0, <>selPage=0, <>selScene=0, <>play=false, <>shift=false , <>alt=false;
 	classvar <>prefs, <>midi, <>midiOut, <>midiChanCount, <>midiClock ;
 
 
@@ -26,7 +26,7 @@ EE {
 		mutes = IdentityDictionary.new();
 		mutesBlinkList = List.new;
 		solos = IdentityDictionary.new();
-		bufferDict = ();
+		bufferList = List.new;
 		group = Group.new;
 
 		// HACK for automatic midi chan assignement
@@ -55,7 +55,7 @@ EE {
 		Buffer.freeAll;
 		voices = List.new; // Store all Voices here
 		scenes = IdentityDictionary.new; // Store all Scenes here
-		bufferDict = ();
+		bufferList = List.new;
 		midiClock.stop;
 	}
 

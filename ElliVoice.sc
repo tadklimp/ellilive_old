@@ -354,12 +354,11 @@ ElliVoice {
 		SimpleController(this).put(\rhythm_changed, { |obj, tag, val, who|
 
 			if ( EE.shift == true)
-			{ this.textRhythm(val)}  // with SHIFT pressed enter a new pattern in the TextView
+			{ this.textRhythm(val)}  // with SHIFT pressed, enter a new pattern in the TextView
 			{
 				rtmView.setStepValueAction(val, false);
 
 				if( rhythmCollection[val].notNil) {
-					rhythmCollection[val].postln;
 					Pbindef(name, \dur, rhythmCollection[val]);
 				}
 			};
@@ -374,11 +373,10 @@ ElliVoice {
 		SimpleController(this).put(\pitch_changed, { |obj, tag, val, who|
 
 			if ( EE.shift == true)
-			{ this.textPitch(val) } // with SHIFT pressed enter a new pattern in the TextView
+			{ this.textPitch(val) } // with SHIFT pressed, enter a new pattern in the TextView
 			{ pitchView.setStepValueAction(val, false);
 
 				if( pitchCollection[val].notNil) {
-					pitchCollection[val].postln;
 					Pbindef(name, \degree, pitchCollection[val]);
 				}
 			};
@@ -410,7 +408,17 @@ ElliVoice {
 					\degree, 0
 				);
 			}
-			{val == \sample} {"am a sam".postln;  }
+			{val == \sample} {"am a sam".postln;
+					Pbindef(name,
+					\server, Server.default,
+					\group, voiceGroup,
+					\instrument, \elliBuf,
+					\amp, amp,
+					\rate, 0,
+					\start, 0,
+					\bufnum, 0
+				);
+			}
 			{val == \midi} {"am ol midi".postln;
 				Pbindef(name,
 					\server, Server.default,

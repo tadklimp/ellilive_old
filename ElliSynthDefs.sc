@@ -21,13 +21,14 @@ ElliSynthDefs {
 		SynthDef(\elliMidi,{ |out=0|
 
 		}).add;
-
-		SynthDed(\elliSample,{ |out=0, bufnum=0, rate|
-			var source,
-
-
-		}).add;
 */
+		SynthDef(\elliBuf,{ |out=0, bufnum=0, rate=1, start=0, gate=1, pan=0.5, amp=0.5|
+			var source, env, exit;
+			source = PlayBuf.ar(2, bufnum, rate, startPos:start);
+			env = EnvGen.ar(Env.asr(), gate);
+			exit = OffsetOut.ar(out, Pan2.ar(source*env, pan, amp))
+		}).add;
+
 		SynthDef(\elliRing, {|freq=200, trig=1, gate=1, out=0, decay=0.5, amp=0.5|
 			var sig, exit, env;
 
