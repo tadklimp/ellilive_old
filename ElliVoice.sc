@@ -7,6 +7,7 @@ ElliVoice {
 	var <>seqView, <>mnmSlidePhrase, <>fxView;
 	var <>sel_seq, <>sel_rhythm, <>sel_pitch, <>sel_fx, <>rtmTranspose, <>pitchTranspose;
 	var <>seqCollection, <>rhythmCollection, <>pitchCollection, <>fxCollection, <>rtmTranspDict , <>pitchTranspDict ;
+	var <>sel_defPbind, <>defPbindCol, <>sel_buf, <>bufCollection;
 
 	var <>type, <>midiOut, <>midiChan;
 	var <>voiceGroup, <>soundGroup, <>fxGroup;
@@ -44,6 +45,12 @@ ElliVoice {
 		sel_fx = 0;
 		rtmTranspose = 1;
 		pitchTranspose = 1;
+
+		sel_defPbind = 0;
+		defPbindCol = IdentityDictionary.new;
+
+		sel_buf = 0;
+		bufCollection = IdentityDictionary.new;
 
 
 		seqCollection = IdentityDictionary.new;
@@ -158,8 +165,15 @@ ElliVoice {
 	}
 
 	set_rhythm { |val, who|
-		sel_rhythm = val;
-		this.changed(\rhythm_changed, val, who);
+
+		if(this.voiceType == \buf || this.voiceType == \sample){
+			sel_buf = val;
+			this.changed(\buffer_changed, val, who);
+		}{
+			sel_rhythm = val;
+			this.changed(\rhythm_changed, val, who);
+
+		}
 	}
 
 	set_rtmTranspose { | val, who|
@@ -168,8 +182,14 @@ ElliVoice {
 	}
 
 	set_pitch { | val, who|
-		sel_pitch = val;
-		this.changed(\pitch_changed, val, who);
+		if(this.voiceType == \buf || this.voiceType == \sample){
+			sel_defPbind = val;
+			this.changed(\pbindef_changed, val, who);
+		}{
+			sel_pitch = val;
+			this.changed(\pitch_changed, val, who);
+
+		}
 	}
 
 	set_pitchTranspose { | val, who|
