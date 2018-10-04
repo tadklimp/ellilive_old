@@ -45,12 +45,15 @@ ElliVoice {
 		rtmTranspose = 1;
 		pitchTranspose = 1;
 
+
 		seqCollection = IdentityDictionary.new;
 		rhythmCollection = IdentityDictionary.new;
 		rtmTranspDict = IdentityDictionary.new;
 		pitchCollection = IdentityDictionary.new;
 		pitchTranspDict = IdentityDictionary.new;
 		fxCollection = IdentityDictionary.new;
+
+
 
 		// Monome Stuff
 		voiceContainer =  GRContainerView( EE.monome, 0@1, 11, 7);
@@ -187,7 +190,7 @@ ElliVoice {
 	mute { |val|
 		if (val==true){
 
-			Pbindef(name, \amp, 0);
+			Pbindef(name, \out, 100);
 
 			if( EE.mutesBlinkList[this.id].isPlaying ){ //blink the appropriate Voice button when muted
 				nil;
@@ -197,9 +200,9 @@ ElliVoice {
 			};
 
 		}{
-			Pbindef(name, \amp, amp);
+			Pbindef(name, \out, 0);
 
-			if(EE.mutesBlinkList[this.id].isPlaying){
+			if( EE.mutesBlinkList[this.id].isPlaying){
 				EE.mutesBlinkList[this.id].stop;
 			}
 		}
@@ -395,6 +398,7 @@ ElliVoice {
 	}
 
 	typeChanged {
+
 		SimpleController(this).put(\voiceType_changed, { |obj, tag, val, who|
 
 			Pbindef(name).clear; // if it exists, clear it;
@@ -408,15 +412,25 @@ ElliVoice {
 					\degree, 0
 				);
 			}
-			{val == \sample} {"am a sam".postln;
-					Pbindef(name,
+			{val == \buf} {
+
+				"am a sam".postln;
+				Pbindef(name,
 					\server, Server.default,
 					\group, voiceGroup,
 					\instrument, \elliBuf,
 					\amp, amp,
-					\rate, 0,
 					\start, 0,
-					\bufnum, 0
+					\sndbuf, 0,
+					\rate, 1,
+					\len,  Pfunc{ |e|
+						var tempo, duration, speed, newDur;
+						tempo = EE.clock.tempo;
+						duration = e.sndbuf.duration ;
+						newDur = duration * tempo ;
+						newDur
+					},
+					\dur,  Pkey(\len) / Pkey(\rate)
 				);
 			}
 			{val == \midi} {"am ol midi".postln;

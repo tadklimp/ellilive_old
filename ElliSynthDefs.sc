@@ -22,11 +22,11 @@ ElliSynthDefs {
 
 		}).add;
 */
-		SynthDef(\elliBuf,{ |out=0, bufnum=0, rate=1, start=0, gate=1, pan=0.5, amp=0.5|
+		SynthDef(\elliBuf,{ |out=0, sndbuf=0, rate=1, start=0, gate=1, pan=0.5, amp=0.5, loop=0|
 			var source, env, exit;
-			source = PlayBuf.ar(2, bufnum, rate, startPos:start);
-			env = EnvGen.ar(Env.asr(), gate);
-			exit = OffsetOut.ar(out, Pan2.ar(source*env, pan, amp))
+			source = PlayBuf.ar(2, sndbuf, BufRateScale.kr(sndbuf)*rate, 1, start * BufFrames.kr(sndbuf), loop, 2);
+			env = EnvGen.ar(Env.asr(), gate, amp, doneAction:2);
+			exit = OffsetOut.ar(out, Pan2.ar(source*env, pan))
 		}).add;
 
 		SynthDef(\elliRing, {|freq=200, trig=1, gate=1, out=0, decay=0.5, amp=0.5|
@@ -47,12 +47,12 @@ ElliSynthDefs {
 			exit = OffsetOut.ar(out, filt*env!2 )
 		}).add;
 
-		SynthDef(\elliMinor,{| freq, dur, gate=1, amp=0.5, out=0 |
+		SynthDef(\elliMinor,{| freq, dur, gate=1, amp=0.5, out=0, rel=2 |
 			var sig,env,exit;
 
 			sig = FSinOsc.ar(freq* SinOsc.kr(Rand(1.0,3.0)).range(1,1.01), SinOsc.kr(2)).tanh.softclip;
 
-			env = sig * EnvGen.ar(Env.linen(0.0006,dur,2,0.5),gate,amp,doneAction:2);
+			env = sig * EnvGen.ar(Env.linen(0.0006,dur,rel,0.5),gate,amp,doneAction:2);
 			env = env * AmpComp.kr(freq, 523.25,1.2)*0.2;
 			exit = Out.ar(out,env!2);
 

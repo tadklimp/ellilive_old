@@ -34,7 +34,6 @@ ElliControls {
 		voiceSelector.action = { |view, value|
 			// inform the model
 			this.set_voice(value, \voiceToggle);
-			"clicked".postln;
 		};
 		this.set_voice(0, \init); // initialize Toggle position
 
@@ -182,9 +181,9 @@ ElliControls {
 					}
 					)
 				}{
-					Pbindef.all.keys.do{ |x| Pbindef(x).stop};
-					16.do{ |i| EE.midiOut.allNotesOff(i) };
-					EE.midiClock.stop;
+					Pbindef.all.keys.do{ |x| Pbindef(x).stop}; // stop all Pdefs
+					16.do{ |i| EE.midiOut.allNotesOff(i) }; // send MIDI NoteOFF to all channels; prevent's hanged notes
+					EE.midiClock.stop; // stop the clock
 			}}{
 				"CLOCK IS NOT RUNNING!".warn
 			};

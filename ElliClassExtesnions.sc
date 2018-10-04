@@ -35,3 +35,18 @@
 	}
 
 }
+
+
++String {
+
+	// open a new Pbindef window to edit it. On close don't ask to save.
+	newEditWindow { arg title="Untitled", makeListener=false;
+		var doc = Document.new(title, this, makeListener)
+		.promptToSave_(false);
+		/*.keyDownAction = { |view, char, mod, unicode, keycode, key|
+		//[view, char, mod, unicode, keycode, key].postln; // Uncomment this to check what key you are pressing.
+		if(key == 16777220 && mod.isCtrl, {this.interpret; doc.close}
+			)};
+		*/
+	}
+}
