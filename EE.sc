@@ -37,8 +37,8 @@ EE {
 		// ADD MIDI support and INIT
 		"MIDI is ON".postln;
 		MIDIClient.init;
-		midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
-		//midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
+		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
 		if (shortBufs.notNil || longBufs.notNil){
@@ -55,12 +55,19 @@ EE {
 		// here most have to be reset
 		// keep monome, view, clock, prefs
 		// remove all SimpleControllers
+		midiClock.stop;
 		Buffer.freeAll;
+		Server.default.freeAll;
+
 		voices = List.new; // Store all Voices here
 		scenes = IdentityDictionary.new; // Store all Scenes here
 		shortBufs = List.new;
 		longBufs = List.new;
-		midiClock.stop;
+		mutes = IdentityDictionary.new();
+		mutesBlinkList = List.new;
+		solos = IdentityDictionary.new();
+		group = Group.new;
+
 	}
 
 	*bpm { |newBpm|

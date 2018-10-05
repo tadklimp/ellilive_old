@@ -149,16 +149,15 @@ ElliControls {
 					{"some seqs left unchanged".warn};
 
 					EE.voices[i].mute(EE.scenes[val][1][i]); // access the Mutes array and ...
-
-
-				}}
+				}
+				}
 				{"scene is empty".warn}
 			};
 
 			// If SHIFT+Scene is pressed store the sequences in the "scenes" Dictionary
 			// else trigger the scene
 			if( EE.shift == true){
-				EE.scenes.put( val, [allSeqs, allMutes]); ( "STORED SCENE " ++ val).postln; EE.scenes.postln
+				EE.scenes.put( val, [allSeqs, allMutes]); ( "STORED SCENE " ++ val).postln;
 			}{
 				select.value; ( "SCENE " ++ val).postln;
 

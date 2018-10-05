@@ -151,7 +151,11 @@ ElliVoice {
 				Rect(150,550,470,50)).background_(Color.green).front;
 			text = TextField(win, Rect(10, 10, 450, 20));
 			text.font_(Font("Andale Mono", 18));
-			//a.string = "hi there";
+
+			if( pitchCollection[position].notNil){ // if something is there, show it
+				text.string_(pitchCollection[position].asCompileString)
+			};
+
 			text.action = { arg field;
 				field.value.postln;
 				pitchCollection.put(position, field.value.interpret);
@@ -167,8 +171,9 @@ ElliVoice {
 			if (type == \buf){
 				win= Window.new(EE.longBufs.size.asString ++" LONGBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
 					Rect(150,550,470,50)).background_(Color.magenta).front;
-			}{ win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
-				Rect(150,550,470,50)).background_(Color.yellow).front;
+			}{
+				win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
+					Rect(150,550,470,50)).background_(Color.yellow).front;
 
 			};
 
@@ -258,100 +263,6 @@ ElliVoice {
 	}
 
 
-	// access Instance variables
-
-	container {
-		^voiceContainer
-	}
-
-	rtmBox {
-		^rtmView
-	}
-
-	pitchBox {
-		^pitchView
-	}
-
-	fxBox {
-		^fxContainer
-	}
-
-	transposeRtmToggle {
-		^transposeViewRtm
-	}
-
-	transposePitchToggle {
-		^transposeViewPitch
-	}
-
-	sequenceView {
-		^seqView
-	}
-
-	sequencer {
-		^sel_seq
-	}
-
-	rhythms {
-		^sel_rhythm
-	}
-
-	pitches {
-		^sel_pitch
-	}
-
-	fx {
-		^sel_fx
-	}
-
-	rhythmTransp {
-		^rtmTranspose
-	}
-
-	pitchTransp {
-		^pitchTranspose
-	}
-
-	// access/change Dictionaries
-
-	seqDict {
-		^seqCollection
-	}
-
-	seqDict_ { |val|
-		seqCollection = IdentityDictionary.new;
-		seqCollection.putAll(val);
-	}
-
-	rhythmDict {
-		^rhythmCollection
-	}
-
-	rhythmDict_ { |val|
-		rhythmCollection = IdentityDictionary.new;
-		rhythmCollection.putAll(val);
-	}
-
-	pitchDict {
-		^pitchCollection
-	}
-
-	pitchDict_ { |val|
-		pitchCollection = IdentityDictionary.new;
-		pitchCollection.putAll(val);
-	}
-
-	fxDict {
-		^fxCollection
-	}
-
-	fxDict_ { |val|
-		fxCollection = IdentityDictionary.new;
-		fxCollection.putAll(val);
-	}
-	voiceType {
-		^type
-	}
 
 	prepareAudioRouting {
 		voiceGroup = Group.new;
@@ -377,7 +288,7 @@ ElliVoice {
 		var source = Pbindef(name).source.cs;
 		source = source.replace("PbindProxy(", " ");
 		source = source.replaceAt(" ",  source.size-1);
-		string = "Pbindef( "++ Pbindef(name).key.asCompileString ++ "," ++ source ++ ")";
+		string = "Pbindef( "++ Pbindef(name).key.asCompileString ++ "," ++ source ++ "); \n";
 		win = string.newEditWindow;
 		win.onClose = {
 			defPbindCol.put(pos, Pbindef(name).cs);
@@ -393,7 +304,7 @@ ElliVoice {
 
 			var allParams = [ this.rhythms, this.pitches, this.fx];
 			var bufParams = [sel_buf, sel_defPbind, this.fx];
-			//if(who == \scene_toggle){{SinOsc.ar(Rand(300,800))*EnvGen.kr(Env.perc,doneAction:2)}.play;}
+
 
 			// While SHIFT+SEQ is pressed store the sequences in the Dictionary
 			if( EE.shift == true)
@@ -459,16 +370,16 @@ ElliVoice {
 						}{
 							Pbindef(name, \sndbuf, EE.shortBufs[bufCollection[val]]);
 						}
-					}{ // if it is a Pattern, get it's List and assign it into Buffer indexes
+					}{ // if it is a Pattern, get its List and assign it into Buffer indexes
 						var pat = bufCollection[val].list;
 						var bufRow, newPat;
 						if ( type == \buf){
 							bufRow = (pat.collect{|i| EE.longBufs[i].bufnum}).asString;
-							newPat = bufCollection[val].class.asString ++ "(" ++ bufRow ++ ", inf )";
+							newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
 							Pbindef(name, \sndbuf, newPat.interpret);
 						}{
 							bufRow = (pat.collect{|i| EE.shortBufs[i].bufnum}).asString;
-							newPat = bufCollection[val].class.asString ++ "(" ++ bufRow ++ ", inf )";
+							newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
 							Pbindef(name, \sndbuf, newPat.interpret);
 						}
 					}
@@ -596,4 +507,99 @@ ElliVoice {
 
 		})
 	}
+	// access Instance variables
+
+	container {
+		^voiceContainer
+	}
+
+	rtmBox {
+		^rtmView
+	}
+
+	pitchBox {
+		^pitchView
+	}
+
+	fxBox {
+		^fxContainer
+	}
+
+	transposeRtmToggle {
+		^transposeViewRtm
+	}
+
+	transposePitchToggle {
+		^transposeViewPitch
+	}
+
+	sequenceView {
+		^seqView
+	}
+
+	sequencer {
+		^sel_seq
+	}
+
+	rhythms {
+		^sel_rhythm
+	}
+
+	pitches {
+		^sel_pitch
+	}
+
+	fx {
+		^sel_fx
+	}
+
+	rhythmTransp {
+		^rtmTranspose
+	}
+
+	pitchTransp {
+		^pitchTranspose
+	}
+
+	// access/change Dictionaries
+
+	seqDict {
+		^seqCollection
+	}
+
+	seqDict_ { |val|
+		seqCollection = IdentityDictionary.new;
+		seqCollection.putAll(val);
+	}
+
+	rhythmDict {
+		^rhythmCollection
+	}
+
+	rhythmDict_ { |val|
+		rhythmCollection = IdentityDictionary.new;
+		rhythmCollection.putAll(val);
+	}
+
+	pitchDict {
+		^pitchCollection
+	}
+
+	pitchDict_ { |val|
+		pitchCollection = IdentityDictionary.new;
+		pitchCollection.putAll(val);
+	}
+
+	fxDict {
+		^fxCollection
+	}
+
+	fxDict_ { |val|
+		fxCollection = IdentityDictionary.new;
+		fxCollection.putAll(val);
+	}
+	voiceType {
+		^type
+	}
+
 }
