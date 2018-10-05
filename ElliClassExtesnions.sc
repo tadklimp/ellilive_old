@@ -43,6 +43,7 @@
 	newEditWindow { arg title="Untitled", makeListener=false;
 		var doc = Document.new(title, this, makeListener)
 		.promptToSave_(false);
+		^doc
 		/*.keyDownAction = { |view, char, mod, unicode, keycode, key|
 		//[view, char, mod, unicode, keycode, key].postln; // Uncomment this to check what key you are pressing.
 		if(key == 16777220 && mod.isCtrl, {this.interpret; doc.close}

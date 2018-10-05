@@ -118,6 +118,7 @@ ElliVoice {
 		this.typeChanged;
 		this.fxChanged;
 		this.bufferChanged;
+		this.pbindefChanged;
 
 
 
@@ -364,7 +365,24 @@ ElliVoice {
 			var adds = [midiOut, midiChan];
 			params = params ++ adds;
 		};
+		if((type == \buf) || (type==\sample)){
+			var adds = [bufCollection, defPbindCol];
+			params = params ++ adds;
+		}
 		^params;
+	}
+
+	patWindow { |pos|
+		var string, win;
+		var source = Pbindef(name).source.cs;
+		source = source.replace("PbindProxy(", " ");
+		source = source.replaceAt(" ",  source.size-1);
+		string = "Pbindef( "++ Pbindef(name).key.asCompileString ++ "," ++ source ++ ")";
+		win = string.newEditWindow;
+		win.onClose = {
+			defPbindCol.put(pos, Pbindef(name).cs);
+		};
+
 	}
 
 	// MVC Responders
@@ -374,16 +392,17 @@ ElliVoice {
 		SimpleController(this).put(\seq_changed, { |obj, tag, val, who|
 
 			var allParams = [ this.rhythms, this.pitches, this.fx];
-			var bufParams ;
+			var bufParams = [sel_buf, sel_defPbind, this.fx];
 			//if(who == \scene_toggle){{SinOsc.ar(Rand(300,800))*EnvGen.kr(Env.perc,doneAction:2)}.play;}
 
 			// While SHIFT+SEQ is pressed store the sequences in the Dictionary
 			if( EE.shift == true)
 			{
 				if((type == \buf) || (type==\sample)){
-
+					seqCollection.put(val, bufParams);
 				}{
-				seqCollection.put(val, allParams)}; }
+					seqCollection.put(val, allParams)}
+			}
 			{// otherwise recall the SEQ at val
 				if( seqCollection.at(val).notNil)
 				{	var newRhythm = seqCollection[val][0];
@@ -476,6 +495,20 @@ ElliVoice {
 		})
 	}
 
+	pbindefChanged {
+		SimpleController(this).put(\pbindef_changed, { |obj, tag, val, who|
+
+			if ( EE.shift == true)
+			{ this.patWindow(val) } // with SHIFT pressed, enter a new pattern in the TextView
+			{ pitchView.setStepValueAction(val, false);
+
+				if( defPbindCol[val].notNil) {
+					defPbindCol[val].interpret;
+				}
+			};
+		})
+	}
+
 	fxChanged  {
 		SimpleController(this).put(\voiceFx_changed, { |obj, tag, val, who|
 
@@ -499,7 +532,8 @@ ElliVoice {
 					\group, voiceGroup,
 					\instrument, \elliRing,
 					\amp, amp,
-					\degree, 0
+					\degree, 0,
+					\octave, 5
 				);
 			}
 			{val == \buf} {
@@ -520,7 +554,8 @@ ElliVoice {
 						newDur = duration * tempo ;
 						newDur
 					},
-					\dur,  Pkey(\len) / Pkey(\rate)
+					\dur,  Pkey(\len) / Pkey(\rate),
+					\out, 2
 				);
 			}
 			{val == \sample} {
@@ -534,14 +569,15 @@ ElliVoice {
 					\start, 0,
 					\sndbuf, EE.shortBufs[0],
 					\rate, 1,
-				/*	\len,  Pfunc{ |e|
-						var tempo, duration, speed, newDur;
-						tempo = EE.clock.tempo;
-						duration = e.sndbuf.duration ;
-						newDur = duration * tempo ;
-						newDur
+					/*	\len,  Pfunc{ |e|
+					var tempo, duration, speed, newDur;
+					tempo = EE.clock.tempo;
+					duration = e.sndbuf.duration ;
+					newDur = duration * tempo ;
+					newDur
 					},*/
-					\dur,  1
+					\dur,  1,
+					\out, 4
 				);
 			}
 			{val == \midi} {"am ol midi".postln;

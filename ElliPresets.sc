@@ -24,44 +24,61 @@ ElliPresets {
 
 	load { | name |
 		var setting;
+		var s = Server.default;
 
-		EE.clear;
+
 
 		//EE.preferences;
+		fork{
+			EE.clear;
+			s.sync;
+
+			EE.recallBufs;
+
+			s.sync;
+			3.wait;
+
+			setting = presetDict.at(name.asSymbol);
+
+			setting.do{ | preset, i |
+				var index = preset[0];
+				var sets = preset[1];
+				var thisVoice;
+
+				if (index != \scenes){
+					EE.voices.insert(index, ElliVoice.new);
+
+					s.sync;
+
+					thisVoice = EE.voices[index];
+					//thisVoice.name.postln;
+					//sets.postcs;
 
 
-		setting = presetDict.at(name.asSymbol);
+					thisVoice.name = sets[1];
 
-		setting.do{ | preset, i |
-			var index = preset[0];
-			var sets = preset[1];
-			var thisVoice;
+					if (sets[2] == \midi){
+						thisVoice.midiChan = sets[10];
+						thisVoice.midiOut = sets[9];
+					};
+					if ((sets[2] == \buf) || (sets[2] == \sample)){
+						thisVoice.defPbindCol = sets[10];
+						thisVoice.bufCollection = sets[9];
+					};
+					thisVoice.setVoiceType(sets[2]);
+					thisVoice.seqDict_(sets[3]);
+					thisVoice.rhythmDict_(sets[4]);
+					thisVoice.pitchDict_(sets[5]);
+					thisVoice.fxDict_(sets[6]);
 
-			if (index != \scenes){
-				EE.voices.insert(index, ElliVoice.new);
+				}{
+					EE.scenes = sets;
+				}
+			};
+			ElliControls.new;
 
-				thisVoice = EE.voices[index];
-				//thisVoice.name.postln;
-				//sets.postcs;
-
-
-				thisVoice.name = sets[1];
-
-				if (sets[2] == \midi){
-					thisVoice.midiChan = sets[10];
-					thisVoice.midiOut = sets[9];
-				};
-				thisVoice.setVoiceType(sets[2]);
-				thisVoice.seqDict_(sets[3]);
-				thisVoice.rhythmDict_(sets[4]);
-				thisVoice.pitchDict_(sets[5]);
-				thisVoice.fxDict_(sets[6]);
-
-			}{
-				EE.scenes = sets;
-			}
 		};
-		ElliControls.new;
+
 		//("the size is "++setting.size).postln;
 		//setting.size.postln;
 		// load

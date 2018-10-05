@@ -10,6 +10,7 @@ ElliPiece {
 
 	initElliPiece { |argNumVoices, type|
 		var voiceType = type;
+		var s = Server.default;
 
 		// max num. of voices = 10
 		if (argNumVoices <= 10){
@@ -32,9 +33,11 @@ ElliPiece {
 			// make General Group
 			// make Master Busses
 		}
+
 		{
 			"MAX NUM. VOICES = 10".warn;
-		}
+		};
+
 	}
 	*load {
 		// etwas

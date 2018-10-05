@@ -37,8 +37,8 @@ EE {
 		// ADD MIDI support and INIT
 		"MIDI is ON".postln;
 		MIDIClient.init;
-		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
-		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+		midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
+		//midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
 		if (shortBufs.notNil || longBufs.notNil){
@@ -76,6 +76,40 @@ EE {
 		.midi_(true) // using midi or not?
 		.midiInPorts_( 2 ) // how many inports you are using
 		.midiOutPorts_( 3 ); // how many outports
+	}
+
+	*recallBufs {
+
+		fork{
+			var s = Server.default;
+			var c = Condition.new;
+			SoundFile.collect("/Users/Makis/Library/Application Support/SuperCollider/Extensions/Tadklimp/Classes/ElliLive/Samples/short/*")
+			.do{ |item, i|
+				var name = item.path;
+				c.test = false;
+
+				if ( name.contains("wav") || name.contains("aif") || name.contains("aiff") || name.contains("WAV"))
+				{ EE.shortBufs.add(Buffer.readChannel(s, name, action:{ c.test_(true).signal; }));
+					c.wait;
+					EE.shortBufs[i].postln;
+				};
+			};
+
+			s.sync;
+
+			SoundFile.collect("/Users/Makis/Library/Application Support/SuperCollider/Extensions/Tadklimp/Classes/ElliLive/Samples/long/*")
+			.do{ |item, i|
+				var name = item.path;
+				c.test = false;
+
+				if ( name.contains("wav") || name.contains("aif") || name.contains("aiff") || name.contains("WAV"))
+				{	EE.longBufs.add(Buffer.read(s, name, action:{ c.test_(true).signal; }));
+					c.wait;
+					EE.longBufs[i].postln;
+				};
+			}
+
+		}
 	}
 
 
