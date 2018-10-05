@@ -5,7 +5,7 @@ EE {
 
 	classvar <>topView, <>monome, <>voices, <>scenes;
 	classvar <>clock ;
-	classvar <>bufferList;
+	classvar <>shortBufs, <>longBufs;
 	classvar <>group, <>mutes, <>solos, <>mutesBlinkList;
 	classvar <>root; // this is for the Pdefns
 	classvar <>prefs;
@@ -26,7 +26,6 @@ EE {
 		mutes = IdentityDictionary.new();
 		mutesBlinkList = List.new;
 		solos = IdentityDictionary.new();
-		bufferList = List.new;
 		group = Group.new;
 
 		// HACK for automatic midi chan assignement
@@ -42,9 +41,13 @@ EE {
 		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
-
-
-
+		if (shortBufs.notNil || longBufs.notNil){
+			if(shortBufs.size > 0 ){shortBufs.do(_.free); shortBufs.clear};
+			if(longBufs.size > 0 ){longBufs.do(_.free); longBufs.clear};
+			Buffer.freeAll;
+		};
+		shortBufs = List.new;
+		longBufs = List.new;
 
 	}
 
@@ -55,7 +58,8 @@ EE {
 		Buffer.freeAll;
 		voices = List.new; // Store all Voices here
 		scenes = IdentityDictionary.new; // Store all Scenes here
-		bufferList = List.new;
+		shortBufs = List.new;
+		longBufs = List.new;
 		midiClock.stop;
 	}
 

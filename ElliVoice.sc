@@ -117,6 +117,7 @@ ElliVoice {
 		this.pitchChanged;
 		this.typeChanged;
 		this.fxChanged;
+		this.bufferChanged;
 
 
 
@@ -158,6 +159,33 @@ ElliVoice {
 			};
 		}.defer;
 	}
+
+	textBuffer { | position |
+		var win, text;
+		{
+			if (type == \buf){
+				win= Window.new(EE.longBufs.size.asString ++" LONGBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
+					Rect(150,550,470,50)).background_(Color.magenta).front;
+			}{ win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
+				Rect(150,550,470,50)).background_(Color.yellow).front;
+
+			};
+
+			text = TextField(win, Rect(10, 10, 450, 20));
+			text.font_(Font("Andale Mono", 18));
+
+			if( bufCollection[position].notNil){ // if something is there, show it
+				text.string_(bufCollection[position].asCompileString)
+			};
+
+			text.action = { arg field;
+				field.value.postln;
+				bufCollection.put(position, field.value.interpret);
+				win.close;
+			};
+		}.defer;
+	}
+
 	// MVC Responders
 	set_seq { | val, who|
 		sel_seq = val;
@@ -166,13 +194,12 @@ ElliVoice {
 
 	set_rhythm { |val, who|
 
-		if(this.voiceType == \buf || this.voiceType == \sample){
+		if( (type == \buf) || (type == \sample) ){
 			sel_buf = val;
 			this.changed(\buffer_changed, val, who);
 		}{
 			sel_rhythm = val;
 			this.changed(\rhythm_changed, val, who);
-
 		}
 	}
 
@@ -182,7 +209,7 @@ ElliVoice {
 	}
 
 	set_pitch { | val, who|
-		if(this.voiceType == \buf || this.voiceType == \sample){
+		if( (type == \buf) || (type == \sample) ){
 			sel_defPbind = val;
 			this.changed(\pbindef_changed, val, who);
 		}{
@@ -210,7 +237,7 @@ ElliVoice {
 	mute { |val|
 		if (val==true){
 
-			Pbindef(name, \out, 100);
+			Pbindef(name, \amp, 0);
 
 			if( EE.mutesBlinkList[this.id].isPlaying ){ //blink the appropriate Voice button when muted
 				nil;
@@ -220,7 +247,7 @@ ElliVoice {
 			};
 
 		}{
-			Pbindef(name, \out, 0);
+			Pbindef(name, \amp, amp);
 
 			if( EE.mutesBlinkList[this.id].isPlaying){
 				EE.mutesBlinkList[this.id].stop;
@@ -347,11 +374,16 @@ ElliVoice {
 		SimpleController(this).put(\seq_changed, { |obj, tag, val, who|
 
 			var allParams = [ this.rhythms, this.pitches, this.fx];
+			var bufParams ;
 			//if(who == \scene_toggle){{SinOsc.ar(Rand(300,800))*EnvGen.kr(Env.perc,doneAction:2)}.play;}
 
 			// While SHIFT+SEQ is pressed store the sequences in the Dictionary
 			if( EE.shift == true)
-			{ seqCollection.put(val, allParams); seqCollection[val].postln }
+			{
+				if((type == \buf) || (type==\sample)){
+
+				}{
+				seqCollection.put(val, allParams)}; }
 			{// otherwise recall the SEQ at val
 				if( seqCollection.at(val).notNil)
 				{	var newRhythm = seqCollection[val][0];
@@ -383,6 +415,44 @@ ElliVoice {
 
 				if( rhythmCollection[val].notNil) {
 					Pbindef(name, \dur, rhythmCollection[val]);
+				}
+			};
+
+
+
+
+		})
+	}
+
+	bufferChanged  {
+		SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
+
+			if ( EE.shift == true)
+			{ this.textBuffer(val)}  // with SHIFT pressed, enter a new pattern in the TextView
+			{
+				rtmView.setStepValueAction(val, false);
+
+				if( bufCollection[val].notNil) {
+					bufCollection[val].postln;
+					if( bufCollection[val].isInteger){ // check whether an integer or a Pattern is stored
+						if ( type == \buf){
+							Pbindef(name, \sndbuf, EE.longBufs[bufCollection[val]]);
+						}{
+							Pbindef(name, \sndbuf, EE.shortBufs[bufCollection[val]]);
+						}
+					}{ // if it is a Pattern, get it's List and assign it into Buffer indexes
+						var pat = bufCollection[val].list;
+						var bufRow, newPat;
+						if ( type == \buf){
+							bufRow = (pat.collect{|i| EE.longBufs[i].bufnum}).asString;
+							newPat = bufCollection[val].class.asString ++ "(" ++ bufRow ++ ", inf )";
+							Pbindef(name, \sndbuf, newPat.interpret);
+						}{
+							bufRow = (pat.collect{|i| EE.shortBufs[i].bufnum}).asString;
+							newPat = bufCollection[val].class.asString ++ "(" ++ bufRow ++ ", inf )";
+							Pbindef(name, \sndbuf, newPat.interpret);
+						}
+					}
 				}
 			};
 
@@ -434,14 +504,14 @@ ElliVoice {
 			}
 			{val == \buf} {
 
-				"am a sam".postln;
+				"buf buf".postln;
 				Pbindef(name,
 					\server, Server.default,
 					\group, voiceGroup,
 					\instrument, \elliBuf,
 					\amp, amp,
 					\start, 0,
-					\sndbuf, 0,
+					\sndbuf, EE.longBufs[0],
 					\rate, 1,
 					\len,  Pfunc{ |e|
 						var tempo, duration, speed, newDur;
@@ -451,6 +521,27 @@ ElliVoice {
 						newDur
 					},
 					\dur,  Pkey(\len) / Pkey(\rate)
+				);
+			}
+			{val == \sample} {
+
+				"am a sam".postln;
+				Pbindef(name,
+					\server, Server.default,
+					\group, voiceGroup,
+					\instrument, \elliBuf,
+					\amp, amp,
+					\start, 0,
+					\sndbuf, EE.shortBufs[0],
+					\rate, 1,
+				/*	\len,  Pfunc{ |e|
+						var tempo, duration, speed, newDur;
+						tempo = EE.clock.tempo;
+						duration = e.sndbuf.duration ;
+						newDur = duration * tempo ;
+						newDur
+					},*/
+					\dur,  1
 				);
 			}
 			{val == \midi} {"am ol midi".postln;
