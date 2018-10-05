@@ -26,6 +26,8 @@ ElliLive {
 
 				//cond.test_(true).signal;
 				EE.recallBufs;
+				s.sync;
+				3.wait;
 
 				ElliPiece.new(numVoices, voiceTypeArray);
 

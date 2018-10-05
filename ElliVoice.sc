@@ -14,7 +14,6 @@ ElliVoice {
 	var <>muteState, <>soloState;
 	var <>mainOut, <>fxIn, <>fxOut;
 	var <>amp;
-
 	var <>pbind;
 
 
@@ -433,6 +432,8 @@ ElliVoice {
 
 	typeChanged {
 
+		var s = Server.default;
+
 		SimpleController(this).put(\voiceType_changed, { |obj, tag, val, who|
 
 			Pbindef(name).clear; // if it exists, clear it;
@@ -456,12 +457,12 @@ ElliVoice {
 					\instrument, \elliBuf,
 					\amp, amp,
 					\start, 0,
-					\sndbuf, EE.longBufs[0],
+					\sndbuf, EE.longBufs[0].bufnum,
 					\rate, 1,
 					\len,  Pfunc{ |e|
 						var tempo, duration, speed, newDur;
 						tempo = EE.clock.tempo;
-						duration = e.sndbuf.duration ;
+						duration = Buffer.cachedBufferAt(s, e.sndbuf).duration ;
 						newDur = duration * tempo ;
 						newDur
 					},
@@ -478,7 +479,7 @@ ElliVoice {
 					\instrument, \elliBuf,
 					\amp, amp,
 					\start, 0,
-					\sndbuf, EE.shortBufs[0],
+					\sndbuf, EE.shortBufs[0].bufnum,
 					\rate, 1,
 					/*	\len,  Pfunc{ |e|
 					var tempo, duration, speed, newDur;

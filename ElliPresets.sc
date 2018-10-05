@@ -2,7 +2,7 @@
 
 ElliPresets {
 
-	var presetDict;
+	var <presetDict;
 
 
 	*new {
@@ -109,6 +109,10 @@ ElliPresets {
 
 	remove {
 		// remove sthng from the Dict
+	}
+
+	entries {
+		^this.presetDict.keys
 	}
 
 
