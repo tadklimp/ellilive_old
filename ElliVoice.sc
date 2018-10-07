@@ -466,7 +466,7 @@ ElliVoice {
 						newDur = duration * tempo ;
 						newDur
 					},
-					\dur,  Pkey(\len) / Pkey(\rate),
+					\dur,  16,
 					\out, 2
 				);
 			}
