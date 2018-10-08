@@ -37,7 +37,7 @@
 }
 
 
-+String {
++ String {
 
 	// open a new Pbindef window to edit it. On close don't ask to save.
 	newEditWindow { arg title="Untitled", makeListener=false;
@@ -49,5 +49,12 @@
 		if(key == 16777220 && mod.isCtrl, {this.interpret; doc.close}
 			)};
 		*/
+	}
+}
+
+
++ Routine {
+	get_receiver {
+		^receiver
 	}
 }
