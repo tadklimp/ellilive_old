@@ -372,13 +372,18 @@ ElliVoice {
 					}{ // if it is a Pattern, get its List and assign it into Buffer indexes
 						var pat = bufCollection[val].list;
 						var bufRow, newPat;
+
 						if ( type == \buf){
-							bufRow = (pat.collect{|i| EE.longBufs[i].bufnum}).asString;
+
+							bufRow = (pat.collect{|i| EE.longBufs.wrapAt(i).bufnum}).asString;
 							newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
+							newPat.postln;
 							Pbindef(name, \sndbuf, newPat.interpret);
 						}{
-							bufRow = (pat.collect{|i| EE.shortBufs[i].bufnum}).asString;
+
+							bufRow = (pat.collect{|i| EE.shortBufs.wrapAt(i).bufnum}).asString;
 							newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
+							newPat.postln;
 							Pbindef(name, \sndbuf, newPat.interpret);
 						}
 					}
