@@ -17,15 +17,17 @@ ElliSynthDefs {
 			env = EnvGen.kr(Env.sine(decay, 1), gate, amp, doneAction:2);
 			exit = OffsetOut.ar(out, (source*env)!2);
 		}).add;
-/*
+		/*
 		SynthDef(\elliMidi,{ |out=0|
 
 		}).add;
-*/
+		*/
 		SynthDef(\elliBuf,{ |out=0, sndbuf=0, rate=1, start=0, gate=1, pan=0.5, amp=0.5, loop=0|
 			var source, env, exit;
-			source = PlayBuf.ar(2, sndbuf, BufRateScale.kr(sndbuf)*rate, 1, start * BufFrames.kr(sndbuf), loop, 2);
-			env = EnvGen.ar(Env.asr(), gate, amp, doneAction:2);
+			env = EnvGen.kr(Env.asr, gate, amp, doneAction:2);
+			source = PlayBuf.ar(2, sndbuf, BufRateScale.kr(sndbuf)*rate, 1, start * BufFrames.kr(sndbuf), loop);
+			source = LeakDC.ar(source);
+			//env = Linen.kr(gate, susLevel:amp, doneAction:2);
 			exit = OffsetOut.ar(out, Pan2.ar(source*env, pan))
 		}).add;
 

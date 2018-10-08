@@ -123,7 +123,7 @@ ElliVoice {
 
 	}
 
-	// text window for inserting new Rhythm Patterns
+	// small text windows for inserting new Patterns
 	textRhythm { | position |
 		var win, text;
 		{
@@ -191,23 +191,7 @@ ElliVoice {
 		}.defer;
 	}
 
-	patWindow { |pos| // open a new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
-		var string, win, source;
-		var altDict = ();
-		var pairs = Pbindef(name).source.source.source.patternpairs.asDict; // access keys+values
-		var rout = pairs.keysValuesDo{ |k,v| // put everything in the new Dict except unwanted keys
-			if( (k==\sndbuf) || (k=='group') ){ nil }{
-				altDict.put( k, v.source.asCompileString ++ "\n");
-		}};
-		source = altDict.asString.replace(":", ","); // cook some String noodles
-		source = source.replaceAt(" ",  0);
-		string = "( \n" + "Pbindef( " ++ Pbindef(name).key.asCompileString ++ "," + "\n" ++ source + ") \n ;"; // final String
-		win = string.newEditWindow; // edit it. New method in String : .newEditWindow
-		win.onClose = { |self|
-			defPbindCol.put(pos, self.text); // onClose, store the new Pbindef in a position
-		};
 
-	}
 
 	// MVC Responders
 	set_seq { | val, who|
@@ -300,11 +284,28 @@ ElliVoice {
 		^params;
 	}
 
+		// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
+	patWindow { |pos|
+		var string, win, source;
+		var altDict = ();
+		var pairs = Pbindef(name).source.source.source.patternpairs.asDict; // access keys+values
+		var rout = pairs.keysValuesDo{ |k,v| // put everything in the new Dict except unwanted keys
+			if( (k==\sndbuf) || (k=='group') ){ nil }{
+				altDict.put( k, v.source.asCompileString ++ "\n");
+		}};
+		source = altDict.asString.replace(":", ","); // cook some String noodles
+		source = source.replaceAt(" ",  0);
+		string = "( \n" + "Pbindef( " ++ Pbindef(name).key.asCompileString ++ "," + "\n" ++ source + ") \n ;"; // final String
+		win = string.newEditWindow; // edit it. New method in String : .newEditWindow
+		win.onClose = { |self|
+			defPbindCol.put(pos, self.text); // onClose, store the new Pbindef in a position
+		};
+
+	}
 
 
-	// MVC Responders
+	// MVC Controllers
 
-	// seq changed
 	sequenceChanged  {
 		SimpleController(this).put(\seq_changed, { |obj, tag, val, who|
 

@@ -96,7 +96,7 @@ EE {
 				c.test = false;
 
 				if ( name.contains("wav") || name.contains("aif") || name.contains("aiff") || name.contains("WAV"))
-				{ EE.shortBufs.add(Buffer.readChannel(s, name, action:{ c.test_(true).signal; }));
+				{ EE.shortBufs.add(Buffer.read(s, name, action:{ c.test_(true).signal; }).normalize(0.8));
 					c.wait;
 					EE.shortBufs[i].postln;
 				};
@@ -110,7 +110,7 @@ EE {
 				c.test = false;
 
 				if ( name.contains("wav") || name.contains("aif") || name.contains("aiff") || name.contains("WAV"))
-				{	EE.longBufs.add(Buffer.read(s, name, action:{ c.test_(true).signal; }));
+				{	EE.longBufs.add(Buffer.read(s, name, action:{ c.test_(true).signal; }).normalize(0.8));
 					c.wait;
 					EE.longBufs[i].postln;
 				};
