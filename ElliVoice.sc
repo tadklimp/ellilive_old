@@ -11,7 +11,7 @@ ElliVoice {
 
 	var <>type, <>midiOut, <>midiChan;
 	var <>voiceGroup, <>soundGroup, <>fxGroup;
-	var muteState, <>soloState;
+	var <>muteStatus, <>soloState;
 	var <>mainOut, <>fxIn, <>fxOut;
 	var <>amp;
 	var <>pbind;
@@ -31,7 +31,7 @@ ElliVoice {
 		soundGroup = Group.new(voiceGroup, \addToHead);
 		fxGroup = Group.new(voiceGroup, \addToTail);
 
-		//this.muteState_(false);
+		this.muteState_(false);
 		soloState = false;
 		amp = 0.5;
 		//midiOut=nil;
@@ -204,7 +204,7 @@ ElliVoice {
 		source = altDict.asString.replace(":", ","); // cook some String noodles
 		source = source.replaceAt(" ",  0);
 		string = "( \n" + "Pbindef( " ++ Pbindef(name).key.asCompileString ++ "," + "\n" ++ source + ") \n ;"; // final String
-		win = string.newEditWindow; // edit it. New method in String : .newEditWindow
+		win = string.newEditWindow; // edit it. New method in String : .newEditWindow; included in ElliClassExtensions
 		win.onClose = { |self|
 			defPbindCol.put(pos, self.text); // onClose, store the new Pbindef in a position
 		};
@@ -263,7 +263,7 @@ ElliVoice {
 
 	muteState_ { |val|
 
-		muteState = val;
+		muteStatus = val;
 		("newState = "++ val).postcs;
 		this.changed(\mute_changed, val);
 	}
@@ -608,7 +608,7 @@ ElliVoice {
 	}
 
 	muteState {
-		^muteState
+		^muteStatus
 	}
 
 

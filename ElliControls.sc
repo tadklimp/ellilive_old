@@ -33,7 +33,12 @@ ElliControls {
 		voiceSelector = GRHToggle( EE.monome, 0@0, EE.voices.size, 1); // VOICE Toggle Selector:
 		voiceSelector.action = { |view, value|
 			// inform the model
-			this.set_voice(value, \voiceToggle);
+			if(EE.shift == true){
+				this.voiceMute(value);
+			}{
+				this.set_voice(value, \voiceToggle);
+
+			}
 		};
 		this.set_voice(0, \init); // initialize Toggle position
 
@@ -148,7 +153,7 @@ ElliControls {
 					}
 					{"some seqs left unchanged".warn};
 
-					EE.voices[i].muteState_(EE.scenes[val][1][i]); // access the Mutes array and ...
+					EE.voices[i].muteState_(EE.scenes[val][1][i]); // access the Mutes array and apply state
 				}
 				}
 				{"scene is empty".warn}
@@ -194,28 +199,22 @@ ElliControls {
 		});
 
 
-		voiceMute = SimpleController(EE).put(\voice_mute, { |obj, tag, val, who|
 
-			var voice = EE.voices[val];
+	}
 
-			if(voice.muteState == false){ // mute toggle logic
-				voice.muteState_(true);
-			}{
-				voice.muteState_(false);
-			}
-		});
+	voiceMute { |val, who|
 
-
+		if(EE.voices[val].muteState == false){ // mute toggle logic
+			EE.voices[val].muteState_(true);
+		}{
+			EE.voices[val].muteState_(false);
+		}
 	}
 
 	set_voice { | val, who|
 
-		if(EE.shift == true){
-			EE.changed(\voice_mute, val, who);
-		}{
-			EE.selVoice = val;
-			EE.changed(\voice_changed, val, who)
-		}
+		EE.selVoice = val;
+		EE.changed(\voice_changed, val, who)
 	}
 
 	set_page { | val, who|

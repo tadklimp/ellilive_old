@@ -37,8 +37,8 @@ EE {
 		// ADD MIDI support and INIT
 		"MIDI is ON".postln;
 		MIDIClient.init;
-		midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
-		//midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
+		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
 		if (shortBufs.notNil || longBufs.notNil){
@@ -64,9 +64,12 @@ EE {
 			midiClock.stop;
 			Buffer.freeAll;
 			s.sync;
+			group.freeAll;
 			Server.default.freeAll;
 			s.sync;
 
+			group = Group.new;
+			s.sync;
 			voices = List.new; // Store all Voices here
 			scenes = IdentityDictionary.new; // Store all Scenes here
 			shortBufs = List.new;
@@ -74,7 +77,7 @@ EE {
 			mutes = IdentityDictionary.new();
 			mutesBlinkList = List.new;
 			solos = IdentityDictionary.new();
-			group = Group.new;
+			//group = Group.new;
 			s.sync;
 		}
 	}
