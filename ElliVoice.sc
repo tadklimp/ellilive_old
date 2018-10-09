@@ -11,7 +11,7 @@ ElliVoice {
 
 	var <>type, <>midiOut, <>midiChan;
 	var <>voiceGroup, <>soundGroup, <>fxGroup;
-	var <>muteState, <>soloState;
+	var muteState, <>soloState;
 	var <>mainOut, <>fxIn, <>fxOut;
 	var <>amp;
 	var <>pbind;
@@ -31,7 +31,7 @@ ElliVoice {
 		soundGroup = Group.new(voiceGroup, \addToHead);
 		fxGroup = Group.new(voiceGroup, \addToTail);
 
-		muteState = false;
+		//this.muteState_(false);
 		soloState = false;
 		amp = 0.5;
 		//midiOut=nil;
@@ -118,6 +118,7 @@ ElliVoice {
 		this.fxChanged;
 		this.bufferChanged;
 		this.pbindefChanged;
+		this.muteChanged;
 
 
 
@@ -191,6 +192,25 @@ ElliVoice {
 		}.defer;
 	}
 
+	// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
+	patWindow { |pos|
+		var string, win, source;
+		var altDict = ();
+		var pairs = Pbindef(name).source.source.source.patternpairs.asDict; // access keys+values
+		var rout = pairs.keysValuesDo{ |k,v| // put everything in the new Dict except unwanted keys
+			if( (k==\sndbuf) || (k=='group') ){ nil }{
+				altDict.put( k, v.source.asCompileString ++ "\n");
+		}};
+		source = altDict.asString.replace(":", ","); // cook some String noodles
+		source = source.replaceAt(" ",  0);
+		string = "( \n" + "Pbindef( " ++ Pbindef(name).key.asCompileString ++ "," + "\n" ++ source + ") \n ;"; // final String
+		win = string.newEditWindow; // edit it. New method in String : .newEditWindow
+		win.onClose = { |self|
+			defPbindCol.put(pos, self.text); // onClose, store the new Pbindef in a position
+		};
+
+	}
+
 
 
 	// MVC Responders
@@ -241,27 +261,17 @@ ElliVoice {
 		this.changed(\voiceType_changed, val, who);
 	}
 
-	mute { |val|
-		if (val==true){
+	muteState_ { |val|
 
-			Pbindef(name, \amp, 0);
-
-			if( EE.mutesBlinkList[this.id].isPlaying ){ //blink the appropriate Voice button when muted
-				nil;
-			}{
-				EE.mutesBlinkList[this.id].reset;
-				EE.mutesBlinkList[this.id].play;
-			};
-
-		}{
-			Pbindef(name, \amp, amp);
-
-			if( EE.mutesBlinkList[this.id].isPlaying){
-				EE.mutesBlinkList[this.id].stop;
-			}
-		}
-
+		muteState = val;
+		("newState = "++ val).postcs;
+		this.changed(\mute_changed, val);
 	}
+
+	/*mute { |val|
+
+
+	}*/
 
 
 
@@ -284,27 +294,44 @@ ElliVoice {
 		^params;
 	}
 
-		// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
-	patWindow { |pos|
-		var string, win, source;
-		var altDict = ();
-		var pairs = Pbindef(name).source.source.source.patternpairs.asDict; // access keys+values
-		var rout = pairs.keysValuesDo{ |k,v| // put everything in the new Dict except unwanted keys
-			if( (k==\sndbuf) || (k=='group') ){ nil }{
-				altDict.put( k, v.source.asCompileString ++ "\n");
-		}};
-		source = altDict.asString.replace(":", ","); // cook some String noodles
-		source = source.replaceAt(" ",  0);
-		string = "( \n" + "Pbindef( " ++ Pbindef(name).key.asCompileString ++ "," + "\n" ++ source + ") \n ;"; // final String
-		win = string.newEditWindow; // edit it. New method in String : .newEditWindow
-		win.onClose = { |self|
-			defPbindCol.put(pos, self.text); // onClose, store the new Pbindef in a position
-		};
-
-	}
 
 
 	// MVC Controllers
+
+	muteChanged {
+		SimpleController(this).put(\mute_changed, { |obj, tag, val, who|
+
+			if (val==true){ // mute
+
+				if (Pbindef(name).isPlaying) {
+					Pbindef(name).pause;
+					"paused".postln;
+				}{
+					this.name.asString ++ " is already muted !".postln;
+				};
+
+
+				if( EE.mutesBlinkList[this.id].isPlaying ){ //blink the appropriate Voice button when muted
+					nil;
+				}{
+					EE.mutesBlinkList[this.id].reset;
+					EE.mutesBlinkList[this.id].play;
+				};
+
+			}{ // unmute
+				if (Pbindef(name).isPlaying.not) {
+					Pbindef(name).resume;
+					"resumed".postln;
+				};
+
+				if( EE.mutesBlinkList[this.id].isPlaying){
+					EE.mutesBlinkList[this.id].stop;
+				}
+
+			}
+
+		})
+	}
 
 	sequenceChanged  {
 		SimpleController(this).put(\seq_changed, { |obj, tag, val, who|
@@ -507,6 +534,7 @@ ElliVoice {
 				);
 			}
 			{val == \midi} {"am ol midi".postln;
+
 				Pbindef(name,
 					\server, Server.default,
 					\group, voiceGroup,
@@ -517,7 +545,10 @@ ElliVoice {
 					\dur, 1,
 					\degree, 0,
 					\amp, amp
-				)
+				);
+
+				if (name ==\voice1){Pbindef(name, \octave, 3)};
+				if (name ==\voice2){Pbindef(name, \octave, 4)};
 			}
 
 		})
@@ -575,6 +606,11 @@ ElliVoice {
 	pitchTransp {
 		^pitchTranspose
 	}
+
+	muteState {
+		^muteState
+	}
+
 
 	// access/change Dictionaries
 

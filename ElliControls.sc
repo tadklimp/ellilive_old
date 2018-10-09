@@ -148,7 +148,7 @@ ElliControls {
 					}
 					{"some seqs left unchanged".warn};
 
-					EE.voices[i].mute(EE.scenes[val][1][i]); // access the Mutes array and ...
+					EE.voices[i].muteState_(EE.scenes[val][1][i]); // access the Mutes array and ...
 				}
 				}
 				{"scene is empty".warn}
@@ -195,14 +195,13 @@ ElliControls {
 
 
 		voiceMute = SimpleController(EE).put(\voice_mute, { |obj, tag, val, who|
+
 			var voice = EE.voices[val];
 
 			if(voice.muteState == false){ // mute toggle logic
-				voice.mute(true);
-				voice.muteState = true;
+				voice.muteState_(true);
 			}{
-				voice.mute(false);
-				voice.muteState = false;
+				voice.muteState_(false);
 			}
 		});
 

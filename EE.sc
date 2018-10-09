@@ -37,8 +37,8 @@ EE {
 		// ADD MIDI support and INIT
 		"MIDI is ON".postln;
 		MIDIClient.init;
-		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
-		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+		midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
+		//midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
 		if (shortBufs.notNil || longBufs.notNil){
@@ -52,22 +52,31 @@ EE {
 	}
 
 	*clear {
+		var s = Server.default;
 		// here most have to be reset
 		// keep monome, view, clock, prefs
 		// remove all SimpleControllers
-		midiClock.stop;
-		Buffer.freeAll;
-		Server.default.freeAll;
+		fork{
+			EE.voices.do{ |voice| EE.mutesBlinkList[voice.id].stop };
 
-		voices = List.new; // Store all Voices here
-		scenes = IdentityDictionary.new; // Store all Scenes here
-		shortBufs = List.new;
-		longBufs = List.new;
-		mutes = IdentityDictionary.new();
-		mutesBlinkList = List.new;
-		solos = IdentityDictionary.new();
-		group = Group.new;
+			Pdef.removeAll;
+			s.sync;
+			midiClock.stop;
+			Buffer.freeAll;
+			s.sync;
+			Server.default.freeAll;
+			s.sync;
 
+			voices = List.new; // Store all Voices here
+			scenes = IdentityDictionary.new; // Store all Scenes here
+			shortBufs = List.new;
+			longBufs = List.new;
+			mutes = IdentityDictionary.new();
+			mutesBlinkList = List.new;
+			solos = IdentityDictionary.new();
+			group = Group.new;
+			s.sync;
+		}
 	}
 
 	*bpm { |newBpm|

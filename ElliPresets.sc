@@ -32,6 +32,7 @@ ElliPresets {
 		fork{
 			EE.clear;
 			s.sync;
+			2.wait;
 
 			EE.recallBufs;
 
