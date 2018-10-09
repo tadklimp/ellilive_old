@@ -284,7 +284,7 @@ ElliVoice {
 		^params;
 	}
 
-		// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
+	// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
 	patWindow { |pos|
 		var string, win, source;
 		var altDict = ();
@@ -480,6 +480,8 @@ ElliVoice {
 						newDur = duration * tempo ;
 						newDur
 					},
+					\att, 0.01,
+					\rel, 1,
 					\dur,  16,
 					\out, 2
 				);
@@ -507,6 +509,7 @@ ElliVoice {
 				);
 			}
 			{val == \midi} {"am ol midi".postln;
+
 				Pbindef(name,
 					\server, Server.default,
 					\group, voiceGroup,
@@ -517,7 +520,9 @@ ElliVoice {
 					\dur, 1,
 					\degree, 0,
 					\amp, amp
-				)
+				);
+				if(name == \voice1){ Pbindef(name, \octave, 3)};// bass midi
+				if(name == \voice2){ Pbindef(name, \octave, 4)};// osc midi
 			}
 
 		})
