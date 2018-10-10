@@ -22,9 +22,9 @@ ElliSynthDefs {
 
 		}).add;
 		*/
-		SynthDef(\elliBuf,{ |out=0, sndbuf=0, rate=1, start=0, gate=1, pan=0.5, amp=0.5, loop=0|
+		SynthDef(\elliBuf,{ |out=0, sndbuf=0, rate=1, start=0, gate=1, pan=0.5, amp=0.5, loop=0, att=0.01, rel=1|
 			var source, env, exit;
-			env = EnvGen.kr(Env.asr, gate, amp, doneAction:2);
+			env = EnvGen.kr(Env.asr( att,1,rel ), gate, amp, doneAction:2);
 			source = PlayBuf.ar(2, sndbuf, BufRateScale.kr(sndbuf)*rate, 1, start * BufFrames.kr(sndbuf), loop,2);
 			source = LeakDC.ar(source);
 			//env = Linen.kr(gate, susLevel:amp, doneAction:2);

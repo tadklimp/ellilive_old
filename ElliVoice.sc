@@ -507,6 +507,8 @@ ElliVoice {
 						newDur = duration * tempo ;
 						newDur
 					},
+					\att, 0.01,
+					\rel, 1,
 					\dur,  16,
 					\out, 2
 				);
@@ -529,6 +531,8 @@ ElliVoice {
 					newDur = duration * tempo ;
 					newDur
 					},*/
+					\att, 0.01,
+					\rel, 1,
 					\dur,  1,
 					\out, 4
 				);
@@ -547,8 +551,8 @@ ElliVoice {
 					\amp, amp
 				);
 
-				if (name ==\voice1){Pbindef(name, \octave, 3)};
-				if (name ==\voice2){Pbindef(name, \octave, 4)};
+				if (name ==\voice1){Pbindef(name, \octave, 3)}; //bass midi
+				if (name ==\voice2){Pbindef(name, \octave, 4)}; // osc midi
 			}
 
 		})
