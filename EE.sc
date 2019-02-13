@@ -37,8 +37,9 @@ EE {
 		// ADD MIDI support and INIT
 		"MIDI is ON".postln;
 		MIDIClient.init;
-		//midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
-		midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
+		midiOut = MIDIOut.newByName("FireWire 410", "FireWire 410").latency_(Server.default.latency);
+		//midiOut = MIDIOut.newByName("Fireface 800 (FA6)", "Port 1").latency_(Server.default.latency);
+		//midiOut = MIDIOut.newByName("IAC Driver", "Bus 1").latency_(Server.default.latency);
 		midiClock = MIDIClockOut.new(midiOut, tempoClock: clock);
 
 		if (shortBufs.notNil || longBufs.notNil){

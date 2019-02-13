@@ -999,7 +999,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	18, [ port: 0,  uid: 433142477,  
+	18, [ port: 0,  uid: -329508479,  
 		latency: 0.1 ],  
 	// Array
 	19, [ 1,  o[20] ],  
@@ -1723,7 +1723,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	190, [ port: 1,  uid: 433142477,  
+	190, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	191, [ 1,  o[192] ],  
@@ -2383,7 +2383,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	322, [ port: 1,  uid: 433142477,  
+	322, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	323, [ 1,  o[324] ],  
@@ -3138,7 +3138,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	507, [ port: 1,  uid: 433142477,  
+	507, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	508, [ 1,  o[509] ],  
@@ -3860,7 +3860,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	675, [ port: 1,  uid: 433142477,  
+	675, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	676, [ 1,  o[677] ],  
@@ -4411,7 +4411,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	775, [ port: 1,  uid: 433142477,  
+	775, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	776, [ 1,  o[777] ],  
@@ -5026,7 +5026,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	889, [ port: 0,  uid: 433142477,  
+	889, [ port: 0,  uid: -329508479,  
 		latency: 0.1 ],  
 	// Array
 	890, [ 1,  o[891] ],  
@@ -5623,7 +5623,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	999, [ port: 1,  uid: 433142477,  
+	999, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	1000, [ 1,  o[1001] ],  
@@ -6169,7 +6169,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	1117, [ port: 0,  uid: 433142477,  
+	1117, [ port: 0,  uid: -329508479,  
 		latency: 0.1 ],  
 	// Array
 	1118, [ 1,  o[1119] ],  
@@ -6884,7 +6884,7 @@ p = [
 		nil,  nil,  nil,  nil,  
 		nil,  nil,  nil,  nil ],  
 	// MIDIOut
-	1281, [ port: 1,  uid: 433142477,  
+	1281, [ port: 1,  uid: -1582190271,  
 		latency: 0.1 ],  
 	// Array
 	1282, [ 1,  o[1283] ],  

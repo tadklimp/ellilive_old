@@ -149,8 +149,8 @@ ElliVoice {
 		{
 			win= Window.new("PITCH " ++ name.asString ++ " ( " ++ type.asString ++ ")",
 				Rect(150,550,470,50)).background_(Color.green).front;
-			text = TextField(win, Rect(10, 10, 450, 20));
-			text.font_(Font("Andale Mono", 18));
+			text = TextField(win, Rect(10, 10, 450, 40));
+			text.font_(Font("Andale Mono", 30));
 
 			if( pitchCollection[position].notNil){ // if something is there, show it
 				text.string_(pitchCollection[position].asCompileString)
@@ -177,8 +177,8 @@ ElliVoice {
 
 			};
 
-			text = TextField(win, Rect(10, 10, 450, 20));
-			text.font_(Font("Andale Mono", 18));
+			text = TextField(win, Rect(10, 10, 450, 40));
+			text.font_(Font("Andale Mono", 30));
 
 			if( bufCollection[position].notNil){ // if something is there, show it
 				text.string_(bufCollection[position].asCompileString)
@@ -510,7 +510,7 @@ ElliVoice {
 					\att, 0.01,
 					\rel, 1,
 					\dur,  16,
-					\out, 2
+					\out, 0
 				);
 			}
 			{val == \sample} {
@@ -534,7 +534,7 @@ ElliVoice {
 					\att, 0.01,
 					\rel, 1,
 					\dur,  1,
-					\out, 4
+					\out, 0
 				);
 			}
 			{val == \midi} {"am ol midi".postln;
