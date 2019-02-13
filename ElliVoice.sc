@@ -264,7 +264,6 @@ ElliVoice {
 	muteState_ { |val|
 
 		muteStatus = val;
-		("newState = "++ val).postcs;
 		this.changed(\mute_changed, val);
 	}
 
@@ -305,7 +304,7 @@ ElliVoice {
 
 				if (Pbindef(name).isPlaying) {
 					Pbindef(name).pause;
-					"paused".postln;
+					("Mute " ++ name).postln;
 				}{
 					this.name.asString ++ " is already muted !".postln;
 				};
@@ -321,7 +320,7 @@ ElliVoice {
 			}{ // unmute
 				if (Pbindef(name).isPlaying.not) {
 					Pbindef(name).resume;
-					"resumed".postln;
+					("Resume " ++ name).postln;
 				};
 
 				if( EE.mutesBlinkList[this.id].isPlaying){
