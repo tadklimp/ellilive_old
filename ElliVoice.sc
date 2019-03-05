@@ -165,11 +165,41 @@ ElliVoice {
 		}.defer;
 	}
 
+	// experimental test for VSCode
 	textBuffer { | position |
 		var win, text;
 		{
 			if (type == \buf){
 				win= Window.new(EE.longBufs.size.asString ++" LONGBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
+					Rect(150,550,470,50)).background_(Color.magenta).front;
+			}{
+				/*win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
+					Rect(150,550,470,50)).background_(Color.yellow).front;
+*/
+				// "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; code -g test.tidal:$(sed -n '/pat3/=' test.tidal) ".unixCmd;
+		"source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape \" : $(sed -n '/pat3/=' test.tidal) \" Enter c-e Enter ".unixCmd;
+			};
+
+			text = TextField(win, Rect(10, 10, 450, 40));
+			text.font_(Font("Andale Mono", 30));
+
+			if( bufCollection[position].notNil){ // if something is there, show it
+				text.string_(bufCollection[position].asCompileString)
+			};
+
+			text.action = { arg field;
+				field.value.postln;
+				bufCollection.put(position, field.value.interpret);
+				win.close;
+			};
+		}.defer;
+	}
+
+	/*textBuffer { | position |
+		var win, text;
+		{
+			if (type == \buf){
+	win= Window.new(EE.longBufs.size.asString ++" LONGBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
 					Rect(150,550,470,50)).background_(Color.magenta).front;
 			}{
 				win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
@@ -190,7 +220,7 @@ ElliVoice {
 				win.close;
 			};
 		}.defer;
-	}
+	}*/
 
 	// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
 	patWindow { |pos|
@@ -387,7 +417,31 @@ ElliVoice {
 		})
 	}
 
-	bufferChanged  {
+	// experimental call to eavluate code in VSCode
+		bufferChanged  {
+		SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
+
+			if ( EE.shift == true)
+			{ this.textBuffer(val)}  // with SHIFT pressed, enter a new pattern in the TextView
+			{
+				rtmView.setStepValueAction(val, false);
+
+				"source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; awk '/pat1/,/^$/' test.tidal".systemCmd;
+
+				// alt way through tmux send-keys
+				// tmux new -d -s tidal tidal
+				// tmux a -t tidal
+				// tmux send-keys -t tidal.0 "" ENTER
+
+			};
+
+
+
+
+		})
+	}
+
+/*	bufferChanged  {
 		SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
 
 			if ( EE.shift == true)
@@ -428,7 +482,7 @@ ElliVoice {
 
 
 		})
-	}
+	}*/
 
 	pitchChanged  {
 		SimpleController(this).put(\pitch_changed, { |obj, tag, val, who|
@@ -655,5 +709,4 @@ ElliVoice {
 	voiceType {
 		^type
 	}
-
 }
