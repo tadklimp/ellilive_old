@@ -165,61 +165,45 @@ ElliVoice {
 		}.defer;
 	}
 
-	// experimental test for VSCode
+	// Store patterns in VIM !!!
 	textBuffer { | position |
-		var win, text;
-		{
-			if (type == \buf){
-				win= Window.new(EE.longBufs.size.asString ++" LONGBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
-					Rect(150,550,470,50)).background_(Color.magenta).front;
-			}{
-				/*win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
-					Rect(150,550,470,50)).background_(Color.yellow).front;
-*/
-				// "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; code -g test.tidal:$(sed -n '/pat3/=' test.tidal) ".unixCmd;
-		"source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape \" : $(sed -n '/pat3/=' test.tidal) \" Enter c-e Enter ".unixCmd;
-			};
-
-			text = TextField(win, Rect(10, 10, 450, 40));
-			text.font_(Font("Andale Mono", 30));
-
-			if( bufCollection[position].notNil){ // if something is there, show it
-				text.string_(bufCollection[position].asCompileString)
-			};
-
-			text.action = { arg field;
-				field.value.postln;
-				bufCollection.put(position, field.value.interpret);
-				win.close;
-			};
-		}.defer;
+		var win, text, path, run, vimBuffer, tidalVoice, patnum;
+		win = (this.id)+1;
+		// this is the path to the files; also send keys and attach to correct session
+		path = "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape ";
+		vimBuffer= ":b"++(win.asString); // access the correct VIM buffer
+		tidalVoice= "d"++(win.asString); // access the correct Tidal voice
+		patnum = ("--pat"++(position+1).asString); // patern number is equal to monome's pad pressed
+		// go to the top of the current block of code and insert a new line with the pattern's nr.
+		// then save the vim file
+		(path++("\"{) O"++patnum++" \" Escape \":w\" Enter ")).unixCmd;
 	}
 
 	/*textBuffer { | position |
-		var win, text;
-		{
-			if (type == \buf){
+	var win, text;
+	{
+	if (type == \buf){
 	win= Window.new(EE.longBufs.size.asString ++" LONGBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
-					Rect(150,550,470,50)).background_(Color.magenta).front;
-			}{
-				win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
-					Rect(150,550,470,50)).background_(Color.yellow).front;
+	Rect(150,550,470,50)).background_(Color.magenta).front;
+	}{
+	win= Window.new(EE.shortBufs.size.asString ++" SHORTBufs  - "++ name.asString ++ " ( " ++ type.asString ++ ")",
+	Rect(150,550,470,50)).background_(Color.yellow).front;
 
-			};
+	};
 
-			text = TextField(win, Rect(10, 10, 450, 40));
-			text.font_(Font("Andale Mono", 30));
+	text = TextField(win, Rect(10, 10, 450, 40));
+	text.font_(Font("Andale Mono", 30));
 
-			if( bufCollection[position].notNil){ // if something is there, show it
-				text.string_(bufCollection[position].asCompileString)
-			};
+	if( bufCollection[position].notNil){ // if something is there, show it
+	text.string_(bufCollection[position].asCompileString)
+	};
 
-			text.action = { arg field;
-				field.value.postln;
-				bufCollection.put(position, field.value.interpret);
-				win.close;
-			};
-		}.defer;
+	text.action = { arg field;
+	field.value.postln;
+	bufCollection.put(position, field.value.interpret);
+	win.close;
+	};
+	}.defer;
 	}*/
 
 	// new window where you can edit the Pbindef. Pass all keys except Buffer and Group!
@@ -418,7 +402,7 @@ ElliVoice {
 	}
 
 	// experimental call to eavluate code in VSCode
-		bufferChanged  {
+	bufferChanged  {
 		SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
 
 			if ( EE.shift == true)
@@ -441,47 +425,47 @@ ElliVoice {
 		})
 	}
 
-/*	bufferChanged  {
-		SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
+	/*	bufferChanged  {
+	SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
 
-			if ( EE.shift == true)
-			{ this.textBuffer(val)}  // with SHIFT pressed, enter a new pattern in the TextView
-			{
-				rtmView.setStepValueAction(val, false);
+	if ( EE.shift == true)
+	{ this.textBuffer(val)}  // with SHIFT pressed, enter a new pattern in the TextView
+	{
+	rtmView.setStepValueAction(val, false);
 
-				if( bufCollection[val].notNil) {
-					bufCollection[val].postln;
-					if( bufCollection[val].isInteger){ // check whether an integer or a Pattern is stored
-						if ( type == \buf){
-							Pbindef(name, \sndbuf, EE.longBufs[bufCollection[val]]);
-						}{
-							Pbindef(name, \sndbuf, EE.shortBufs[bufCollection[val]]);
-						}
-					}{ // if it is a Pattern, get its List and assign it into Buffer indexes
-						var pat = bufCollection[val].list;
-						var bufRow, newPat;
+	if( bufCollection[val].notNil) {
+	bufCollection[val].postln;
+	if( bufCollection[val].isInteger){ // check whether an integer or a Pattern is stored
+	if ( type == \buf){
+	Pbindef(name, \sndbuf, EE.longBufs[bufCollection[val]]);
+	}{
+	Pbindef(name, \sndbuf, EE.shortBufs[bufCollection[val]]);
+	}
+	}{ // if it is a Pattern, get its List and assign it into Buffer indexes
+	var pat = bufCollection[val].list;
+	var bufRow, newPat;
 
-						if ( type == \buf){
+	if ( type == \buf){
 
-							bufRow = (pat.collect{|i| EE.longBufs.wrapAt(i).bufnum}).asString;
-							newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
-							newPat.postln;
-							Pbindef(name, \sndbuf, newPat.interpret);
-						}{
+	bufRow = (pat.collect{|i| EE.longBufs.wrapAt(i).bufnum}).asString;
+	newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
+	newPat.postln;
+	Pbindef(name, \sndbuf, newPat.interpret);
+	}{
 
-							bufRow = (pat.collect{|i| EE.shortBufs.wrapAt(i).bufnum}).asString;
-							newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
-							newPat.postln;
-							Pbindef(name, \sndbuf, newPat.interpret);
-						}
-					}
-				}
-			};
-
-
+	bufRow = (pat.collect{|i| EE.shortBufs.wrapAt(i).bufnum}).asString;
+	newPat = bufCollection[val].class.asString ++ "(" + bufRow + ", inf ); \n";
+	newPat.postln;
+	Pbindef(name, \sndbuf, newPat.interpret);
+	}
+	}
+	}
+	};
 
 
-		})
+
+
+	})
 	}*/
 
 	pitchChanged  {
