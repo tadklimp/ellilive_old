@@ -13,19 +13,26 @@ EE.voices[0].type
 
 ~eval = " \" :$(sed -n '/pat3/=' test.tidal) \" Enter c-e Enter Escape";
 ~bu4 = "\" :b4 \" Enter \"/d4\" Enter ";
-~bu2 = "\" :b2 \" Enter \"/buf3\" Enter ";
-~bu1 = "\" :b1 \" Enter \"/pat3\" Enter ";
+~bu2 = "\" :b2 \" Enter \"/pat2\" Enter ";
+~bu1 = "\" :b1 \" Enter \"/pat2\" Enter ";
 ~run = "c-e Enter "
 ~path = "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape "
 
 
-(~path++~bu1++~run++~bu2++~run).unixCmd;
+("sleep 2 ;"++ ~path++~bu1++~run++~bu2++~run).unixCmd;
 
 // send --patNum to Vim
 (~path++("\"{) O--pat9 \" Escape \":w\" Enter ")).unixCmd
 
+// try :vert sb N
 
 // TODO
 - VIM
-- how to save buffers with project
+x how to save buffers with project
 x set "patX" above the current block code when saved in a pad
+- can vim report how many buffers it holds?
+x automatically renumber buffers in vim when closing one = not possible
+x when calling buffer jump to its window = ok, but not sure i want that
+
+-PLAYbutton should trigger scene OR sent hush
+-Voicebutton should also trigger b:w

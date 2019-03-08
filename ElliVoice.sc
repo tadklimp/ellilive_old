@@ -167,12 +167,12 @@ ElliVoice {
 
 	// Store patterns in VIM !!!
 	textBuffer { | position |
-		var win, text, path, run, vimBuffer, tidalVoice, patnum;
-		win = (this.id)+1;
+		var who, text, path, run, vimBuffer, tidalVoice, patnum;
+		who = (this.id)+1;
 		// this is the path to the files; also send keys and attach to correct session
 		path = "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape ";
-		vimBuffer= ":b"++(win.asString); // access the correct VIM buffer
-		tidalVoice= "d"++(win.asString); // access the correct Tidal voice
+		vimBuffer= ":b"++(who.asString); // access the correct VIM buffer
+		tidalVoice= "d"++(who.asString); // access the correct Tidal voice
 		patnum = ("--pat"++(position+1).asString); // patern number is equal to monome's pad pressed
 		// go to the top of the current block of code and insert a new line with the pattern's nr.
 		// then save the vim file
@@ -404,19 +404,24 @@ ElliVoice {
 	// experimental call to eavluate code in VSCode
 	bufferChanged  {
 		SimpleController(this).put(\buffer_changed, { |obj, tag, val, who|
+			var vimID, text, path, run, vimBuffer, tidalVoice, patnum, call;
 
 			if ( EE.shift == true)
 			{ this.textBuffer(val)}  // with SHIFT pressed, enter a new pattern in the TextView
 			{
 				rtmView.setStepValueAction(val, false);
 
-				"source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; awk '/pat1/,/^$/' test.tidal".systemCmd;
-
-				// alt way through tmux send-keys
-				// tmux new -d -s tidal tidal
-				// tmux a -t tidal
-				// tmux send-keys -t tidal.0 "" ENTER
-
+				vimID = (this.id)+1;
+				// this is the path to the files; also send keys and attach to correct session
+				path = "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape ";
+				vimBuffer= ":vert sb"++((vimID+1).asString); // access the correct VIM buffer - we're adding 1 cause we work in a session in VIM - this means that buffers start at 2, sine nr.1 is used to source the "session.vim" file itself.
+				tidalVoice= "d"++(vimID.asString); // access the correct Tidal voice
+				patnum = ("pat"++(val+1).asString); // patern number is equal to monome's pad pressed
+				// go to the top of the current block of code and insert a new line with the pattern's nr.
+				// then save the vim file
+				call = "\" "++ vimBuffer ++ " \" Enter "++ "\"/"++ patnum ++ "\" Enter ";
+				run = "c-e Enter ";
+				(path ++ call ++ run).unixCmd;
 			};
 
 
