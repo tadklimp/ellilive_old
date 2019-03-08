@@ -1,0 +1,27 @@
+
+
+git status / gst
+git log
+git diff
+
+git branch
+
+$live
+
+git diff bufWorks..bAusland 
+
+git diff bAusland..bufWorks
+
+### push
+git push -u origin bAuslandD 
+
+### change branch name
+git branch -m <oldname> <newname>
+
+for current branch: 
+git branch -m <newname>
+
+
+
+
+

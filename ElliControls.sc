@@ -94,11 +94,11 @@ ElliControls {
 
 		// MVC "View" of Toggle Selections
 		voiceChanged = SimpleController(EE).put(\voice_changed, { |obj, tag, val, who|
-
 			// access each Voice's Container and FX
 			var container = EE.voices[val].container;
 			var fxC = EE.voices[val].fxBox;
 			var seqV = EE.voices[val].sequenceView;
+			var path, vimBuffer;
 
 			// voice asks which page is selected:
 			switch( EE.selPage,
@@ -110,6 +110,12 @@ ElliControls {
 				},
 				2, { container.bringToFront; seqV.bringToFront; }
 			);
+
+			// show selected voice in VIM
+			path = "source ~/.zshrc; cd /Users/Makis/Documents/Tidal/Ellicist/live0/ ; tmux send-keys -t tidal.0 Escape ";
+			vimBuffer= ":b"++((val+2).asString); // we're adding 2 cause we work in a 'Session' in VIM -
+			// this means that buffers start at 2, since nr.1 is used to source the "session.vim" file itself.
+			(path++vimBuffer++" Enter").unixCmd;
 			// initialise voice selection
 			//	if ( who == \init) {this.set_voice(val)};
 			//[obj, tag, key, val, who].postln;

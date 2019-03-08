@@ -170,7 +170,7 @@ ElliVoice {
 		var who, text, path, run, vimBuffer, tidalVoice, patnum;
 		who = (this.id)+1;
 		// this is the path to the files; also send keys and attach to correct session
-		path = "source ~/.zshrc; cd /Users/Makis/Documents/Tests/ ; tmux send-keys -t tidal.0 Escape ";
+		path = "source ~/.zshrc; cd /Users/Makis/Documents/Tidal/Ellicist/live0/ ; tmux send-keys -t tidal.0 Escape ";
 		vimBuffer= ":b"++(who.asString); // access the correct VIM buffer
 		tidalVoice= "d"++(who.asString); // access the correct Tidal voice
 		patnum = ("--pat"++(position+1).asString); // patern number is equal to monome's pad pressed
