@@ -63,6 +63,11 @@ EE {
 			Pdef.removeAll;
 			s.sync;
 			midiClock.stop;
+			s.sync;
+			if (shortBufs.notNil || longBufs.notNil){
+				if(shortBufs.size > 0 ){shortBufs.do(_.free); shortBufs.clear};
+				if(longBufs.size > 0 ){longBufs.do(_.free); longBufs.clear};
+			};
 			Buffer.freeAll;
 			s.sync;
 			group.freeAll;
@@ -94,8 +99,8 @@ EE {
 		.bitDepth_("float32") // possible: "int16", "int24", "int32"
 		.numberOfChannels_(6) // number of audio channels used
 		.midi_(true) // using midi or not?
-		.midiInPorts_( 2 ) // how many inports you are using
-		.midiOutPorts_( 3 ); // how many outports
+		.midiInPorts_( 2 ) // how many in-ports you are using
+		.midiOutPorts_( 3 ); // how many out-ports
 	}
 
 	*recallBufs {
