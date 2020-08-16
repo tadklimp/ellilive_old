@@ -22,6 +22,11 @@ for current branch:
 git branch -m <newname>
 
 
+### upload all branches and tags
+git push --all origin
+
+
+
 
 
 
